@@ -1,74 +1,54 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, AtSign, Bot, Check, ChevronRight, CirclePlay, Instagram, Linkedin, Mail, Menu, MessageCircle, Search, Send, Sparkles, Twitter, Workflow, X, Zap } from "lucide-react";
-import { useState, type HTMLAttributes, type ReactNode } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { AmbientCanvas } from "@/components/landing/AmbientCanvas";
+import { CTASection } from "@/components/landing/CTASection";
+import { FeatureBento } from "@/components/landing/FeatureBento";
+import { Footer } from "@/components/landing/Footer";
+import { GmailInboxShowcase } from "@/components/landing/GmailInboxShowcase";
+import { Hero } from "@/components/landing/Hero";
+import { InfiniteCarousel } from "@/components/landing/InfiniteCarousel";
+import { Navbar } from "@/components/landing/Navbar";
+import { Pricing } from "@/components/landing/Pricing";
 
 export const Route = createFileRoute("/")({
-  head: () => ({ meta: [
-    { title: "koLink Chat — One inbox. Every conversation." },
-    { name: "description", content: "Bring WhatsApp, Instagram, Messenger, and email into one intelligent customer workspace." },
-    { property: "og:title", content: "koLink Chat — One inbox. Every conversation." },
-    { property: "og:description", content: "Bring every customer conversation into one intelligent workspace." },
-    { property: "og:type", content: "website" },
-    { name: "twitter:card", content: "summary_large_image" },
-  ]}),
+  head: () => ({
+    meta: [
+      { title: "koLink Chat — Chat marketing & engagement, without the tab chaos." },
+      {
+        name: "description",
+        content:
+          "Unify conversations, automate comments and likes, empower your support team, and manage complete customer profiles across every social platform.",
+      },
+      {
+        property: "og:title",
+        content: "koLink Chat — Chat marketing & engagement, without the tab chaos.",
+      },
+      {
+        property: "og:description",
+        content:
+          "One luminous inbox for Instagram, Facebook, Messenger, WhatsApp, Threads, X, LinkedIn, and Email.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: "/apple-touch-icon.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-const channelsA = [
-  ["IG", "Instagram", "Connected", "Comments, DMs & reels", "bg-coral/15 text-coral"], ["MS", "Messenger", "0ms latency", "Pages & replies", "bg-cyan/15 text-cyan"], ["WA", "WhatsApp", "Connected", "Meta embedded signup", "bg-success/15 text-success"], ["FB", "Facebook", "Live API", "Comments & mentions", "bg-cyan/15 text-cyan"], ["TH", "Threads", "Instant sync", "Replies & mentions", "bg-violet/15 text-violet"], ["X", "X / Twitter", "Live API", "DMs & replies", "bg-foreground/10 text-foreground"], ["IN", "LinkedIn", "Connected", "Leads & messages", "bg-cyan/15 text-cyan"], ["GM", "Email / Gmail", "Synced", "Shared team mail", "bg-coral/15 text-coral"],
-];
-const channelsB = [
-  ["TG", "Telegram", "Connected", "Bots & groups", "bg-cyan/15 text-cyan"], ["SL", "Slack", "Live", "Team alerts", "bg-coral/15 text-coral"], ["DC", "Discord", "Connected", "Community inbox", "bg-violet/15 text-violet"], ["SH", "Shopify", "Orders live", "Customer context", "bg-success/15 text-success"], ["WH", "Webhooks", "0ms latency", "Custom events", "bg-violet/15 text-violet"], ["HS", "HubSpot", "CRM sync", "Contacts & deals", "bg-coral/15 text-coral"], ["ZA", "Zapier", "4.8k apps", "Workflow actions", "bg-cyan/15 text-cyan"], ["TW", "Twilio", "Connected", "SMS & voice", "bg-coral/15 text-coral"],
-];
-
-function GlassCard({ children, className = "", ...props }: { children: ReactNode } & HTMLAttributes<HTMLDivElement>) {
-  return <motion.div whileHover={{ y: -5, rotateX: 1.5, rotateY: -1.5 }} transition={{ type: "spring", stiffness: 280, damping: 22 }} onMouseMove={(event) => { const rect = event.currentTarget.getBoundingClientRect(); event.currentTarget.style.setProperty("--mouse-x", `${event.clientX - rect.left}px`); event.currentTarget.style.setProperty("--mouse-y", `${event.clientY - rect.top}px`); }} className={`glass-panel card-spotlight group relative overflow-hidden rounded-2xl transform-gpu ${className}`} {...props}><div className="pointer-events-none absolute -left-20 -top-20 size-48 rounded-full bg-cyan/5 blur-3xl transition-all duration-500 group-hover:bg-cyan/10" />{children}</motion.div>;
-}
-
-function Reveal({ children, className = "" }: { children: ReactNode; className?: string }) {
-  const reduce = useReducedMotion();
-  return <motion.div className={className} initial={reduce ? false : { opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: .65, ease: [0.22, 1, 0.36, 1] }}>{children}</motion.div>;
-}
-
-function ChannelRow({ items, reverse = false }: { items: string[][]; reverse?: boolean }) {
-  const loop = [...items, ...items];
-  return <div className="group/marquee overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]"><div className={`flex w-max gap-3 py-2 will-change-transform group-hover/marquee:[animation-play-state:paused] ${reverse ? "marquee-right" : "marquee-left"}`}>{loop.map((item, i) => <div key={`${item[0]}-${i}`} className="glass-panel flex min-w-72 items-center gap-3 rounded-xl px-4 py-3 transition-transform hover:-translate-y-1"><div className={`grid size-11 place-items-center rounded-lg text-xs font-extrabold drop-shadow-lg ${item[4]}`}>{item[0]}</div><div className="min-w-0"><div className="flex items-center gap-2"><p className="text-sm font-semibold">{item[1]}</p><span className="rounded-full bg-success/10 px-2 py-0.5 text-[8px] font-bold text-success">{item[2]}</span></div><p className="mt-1 truncate text-[10px] text-muted-foreground">{item[3]}</p></div></div>)}</div></div>;
-}
-
-function InboxPreview() {
-  return <div className="relative mx-auto mt-16 max-w-6xl [perspective:1400px]"><div className="glass-panel relative overflow-hidden rounded-2xl p-2 shadow-[0_40px_120px_oklch(0.05_0.03_270/75%)] md:rotate-x-[2deg]"><div className="flex h-[420px] overflow-hidden rounded-xl border border-border bg-background/70 md:h-[540px]">
-    <aside className="hidden w-16 shrink-0 flex-col items-center border-r border-border py-5 sm:flex"><div className="grid size-8 place-items-center rounded-lg bg-primary text-xs font-extrabold text-primary-foreground">k</div><div className="mt-8 grid gap-5 text-muted-foreground"><MessageCircle className="text-cyan"/><AtSign/><Workflow/><Bot/></div><div className="mt-auto size-8 rounded-full bg-violet/30" /></aside>
-    <section className="w-32 shrink-0 border-r border-border sm:w-64"><div className="border-b border-border p-4"><p className="text-sm font-bold">Inbox <span className="ml-1 rounded-full bg-primary/15 px-2 py-0.5 text-[10px] text-cyan">12</span></p><div className="mt-3 flex items-center gap-2 rounded-lg bg-muted px-3 py-2 text-xs text-muted-foreground"><Search size={13}/> Search</div></div>{[["M","Maya Chen","Can we ship to Berlin?","WA","2m"],["J","Jon Bell","That looks perfect!","IG","8m"],["A","Amelia R.","Order #4829","GM","14m"],["N","Noah Stone","Need help choosing","MS","28m"]].map((c,i)=><div key={c[1]} className={`flex gap-2 border-b border-border p-3 ${i===0?"bg-cyan/5":""}`}><div className="grid size-8 shrink-0 place-items-center rounded-full bg-secondary text-xs font-bold">{c[0]}</div><div className="min-w-0 flex-1"><div className="flex justify-between"><b className="truncate text-xs">{c[1]}</b><span className="text-[9px] text-muted-foreground">{c[4]}</span></div><p className="truncate text-[10px] text-muted-foreground">{c[2]}</p></div></div>)}</section>
-    <main className="flex min-w-0 flex-1 flex-col"><div className="flex h-16 items-center justify-between border-b border-border px-4"><div><p className="text-sm font-semibold">Maya Chen</p><p className="text-[10px] text-success">● WhatsApp · online</p></div><div className="rounded-full border border-border px-3 py-1 text-[10px] text-muted-foreground">Assigned to you</div></div><div className="flex-1 space-y-4 overflow-hidden p-4 md:p-7"><p className="mx-auto w-fit rounded-full bg-muted px-3 py-1 text-[9px] text-muted-foreground">Today, 11:42 AM</p><div className="max-w-64 rounded-2xl rounded-tl-sm bg-secondary p-3 text-xs leading-5">Hi! Can we ship the Creator bundle to Berlin?</div><div className="ml-auto max-w-72 rounded-2xl rounded-tr-sm bg-primary p-3 text-xs text-primary-foreground">Absolutely — delivery usually takes 2–3 business days. Want me to reserve one?</div><div className="max-w-56 rounded-2xl rounded-tl-sm bg-secondary p-3 text-xs">Yes please! That’s perfect.</div><div className="hidden items-center gap-2 rounded-lg border border-border bg-muted/60 p-3 text-xs text-muted-foreground md:flex"><Sparkles size={14} className="text-violet"/> AI suggested a reply <ChevronRight className="ml-auto" size={14}/></div></div><div className="m-3 flex items-center gap-2 rounded-xl border border-border bg-card p-2"><span className="px-2 text-xs text-muted-foreground">Write a reply…</span><Send className="ml-auto text-cyan" size={16}/></div></main>
-    <aside className="hidden w-56 shrink-0 border-l border-border p-5 lg:block"><p className="text-xs font-bold">Customer details</p><div className="mx-auto mt-6 grid size-14 place-items-center rounded-full bg-violet/20 font-bold">MC</div><p className="mt-2 text-center text-xs font-semibold">Maya Chen</p><div className="mt-6 space-y-3 text-[10px] text-muted-foreground"><p className="flex justify-between">Lifetime value <b className="text-foreground">$1,240</b></p><p className="flex justify-between">Orders <b className="text-foreground">8</b></p><p className="flex justify-between">Last active <b className="text-success">Now</b></p></div></aside>
-  </div></div><div className="animate-floaty absolute -left-2 top-24 hidden rounded-xl border border-border bg-card px-4 py-3 text-xs shadow-2xl backdrop-blur-xl md:block"><Zap className="mr-2 inline text-cyan" size={14}/> WhatsApp lead converted</div><div className="animate-floaty absolute -right-3 bottom-20 hidden rounded-xl border border-border bg-card px-4 py-3 text-xs shadow-2xl [animation-delay:1.4s] backdrop-blur-xl md:block"><Instagram className="mr-2 inline text-coral" size={14}/> Comment auto-replied</div></div>;
-}
-
 function Index() {
-  const [menu, setMenu] = useState(false);
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background text-foreground selection:bg-primary/30">
-      <div className="pointer-events-none fixed inset-0 opacity-80"><div className="absolute -left-1/4 -top-1/4 h-[700px] w-[700px] rounded-full bg-violet/15 blur-[140px] [animation:aurora_14s_ease-in-out_infinite]"/><div className="absolute -right-1/4 top-1/3 h-[650px] w-[650px] rounded-full bg-cyan/10 blur-[150px] [animation:aurora_16s_ease-in-out_infinite_reverse]"/><div className="absolute inset-0 opacity-30 [background-image:radial-gradient(oklch(1_0_0/10%)_0.6px,transparent_0.6px)] [background-size:7px_7px]"/></div>
-      <header className="fixed inset-x-0 top-4 z-50 mx-auto max-w-6xl px-4"><nav className="glass-panel flex h-14 items-center justify-between rounded-full px-4 md:px-6"><a href="#top" className="flex items-center gap-2 font-extrabold"><span className="grid size-8 place-items-center rounded-full bg-primary text-primary-foreground shadow-[0_0_24px_var(--glow-primary)]">k</span>koLink <span className="font-medium text-muted-foreground">Chat</span></a><div className="hidden items-center gap-7 text-xs font-medium text-muted-foreground md:flex">{["Features","Channels","Pricing","Docs"].map(x=><a className="transition-colors hover:text-foreground" href={x === "Docs" ? "#features" : `#${x.toLowerCase()}`} key={x}>{x}</a>)}</div><div className="hidden items-center gap-2 md:flex"><Button variant="ghost" className="rounded-full">Log in</Button><motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: .97 }}><Button variant="luminous">Get started <ArrowRight/></Button></motion.div></div><Button aria-label="Toggle menu" variant="ghost" size="icon" className="rounded-full md:hidden" onClick={()=>setMenu(!menu)}>{menu?<X/>:<Menu/>}</Button></nav><AnimatePresence>{menu&&<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} className="glass-panel mt-2 grid rounded-2xl p-3 md:hidden">{["Features","Channels","Pricing","Docs"].map((x,i)=><motion.a initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i*.05 }} className="rounded-lg p-3 text-sm text-muted-foreground hover:bg-accent" href={x === "Docs" ? "#features" : `#${x.toLowerCase()}`} onClick={()=>setMenu(false)} key={x}>{x}</motion.a>)}<Button variant="luminous" className="mt-2">Get started</Button></motion.div>}</AnimatePresence></header>
-
-      <main id="top" className="relative z-10 pt-32">
-        <section className="mx-auto max-w-7xl px-5 text-center"><motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground backdrop-blur-xl"><span className="relative flex size-2"><span className="absolute inline-flex size-full animate-ping rounded-full bg-success opacity-60"/><span className="relative size-2 rounded-full bg-success"/></span> Multi-Channel DM Sync 2.0</motion.div><motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .1, duration: .7 }} className="text-shimmer mx-auto mt-7 max-w-5xl text-5xl font-extrabold leading-[1.05] md:text-7xl lg:text-[88px]">Chat marketing,<br/>without the tab chaos.</motion.h1><motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .2, duration: .6 }} className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-muted-foreground md:text-base">koLink Chat is a calm workspace to automate and reply across every place your audience already talks — then hand off to a human when it matters.</motion.p><motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .3 }} className="mt-8 flex flex-col justify-center gap-3 sm:flex-row"><motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: .97 }}><Button variant="luminous" size="lg" onClick={()=>document.querySelector("#workspace")?.scrollIntoView({behavior:"smooth"})}>Start free <ArrowRight/></Button></motion.div><Button variant="glass" size="lg" onClick={()=>document.querySelector("#features")?.scrollIntoView({behavior:"smooth"})}><CirclePlay/> Live interactive demo</Button></motion.div><p className="mt-4 text-[10px] text-muted-foreground">No credit card · Set up in under 5 minutes</p><InboxPreview/></section>
-
-        <section id="channels" className="scroll-mt-24 py-28"><Reveal className="mx-auto mb-10 max-w-3xl px-5 text-center"><p className="text-xs font-bold uppercase text-cyan">Every channel. One pulse.</p><h2 className="mt-3 text-3xl font-bold md:text-5xl">Your customers already live here.</h2></Reveal><div className="space-y-2"><ChannelRow items={channelsA}/><ChannelRow items={channelsB} reverse/></div></section>
-
-        <section id="features" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-16"><Reveal className="mb-12 max-w-2xl"><p className="text-xs font-bold uppercase text-violet">One calm command center</p><h2 className="mt-3 text-3xl font-bold md:text-5xl">Less busywork. More human moments.</h2></Reveal><div className="grid gap-4 md:grid-cols-2"><GlassCard className="min-h-96 p-7 md:row-span-2"><div className="relative z-10"><div className="mb-5 grid size-10 place-items-center rounded-xl bg-coral/15 text-coral"><Instagram/></div><h3 className="text-xl font-bold">Comment to conversation</h3><p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">Turn a comment into a DM, then escalate seamlessly to WhatsApp.</p><div className="mt-10 rounded-xl border border-border bg-background/50 p-4"><div className="flex gap-3"><div className="grid size-9 place-items-center rounded-full bg-coral/15 text-coral"><Instagram size={16}/></div><div><b className="text-xs">@maya.creates</b><p className="mt-1 text-xs text-muted-foreground">Can I get the link for this bundle?</p></div></div></div><div className="mx-auto my-3 h-8 w-px bg-gradient-to-b from-coral to-cyan"/><div className="rounded-xl border border-cyan/20 bg-cyan/5 p-4"><p className="text-[10px] font-bold text-cyan">DM SENT · WHATSAPP READY</p><div className="mt-3 flex gap-3"><MessageCircle className="text-success" size={17}/><p className="text-xs">Hey Maya! Here’s your personal link ✨</p></div></div></div></GlassCard>
-          <GlassCard className="p-7"><div className="relative z-10"><div className="mb-5 grid size-10 place-items-center rounded-xl bg-cyan/15 text-cyan"><MessageCircle/></div><h3 className="text-xl font-bold">One shared inbox</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Context, tags, and ownership follow the customer.</p><div className="mt-6 flex flex-wrap gap-2 text-[9px]"><span className="rounded-full bg-cyan/10 px-3 py-1 text-cyan">VIP</span><span className="rounded-full bg-violet/10 px-3 py-1 text-violet">Sales lead</span><span className="rounded-full bg-success/10 px-3 py-1 text-success">Assigned</span></div><div className="mt-5 flex -space-x-2">{["MC","JB","AR","NS"].map((x,i)=><div className={`grid size-10 place-items-center rounded-full border-2 border-background text-[10px] font-bold ${i%2?"bg-violet/30":"bg-cyan/20"}`} key={x}>{x}</div>)}<div className="grid size-10 place-items-center rounded-full border-2 border-background bg-muted text-[10px]">+84</div></div></div></GlassCard>
-          <GlassCard id="automations" className="p-7"><div className="relative z-10"><div className="mb-5 grid size-10 place-items-center rounded-xl bg-violet/15 text-violet"><Workflow/></div><h3 className="text-xl font-bold">Flows that stay readable</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Smart routing your whole team can understand.</p><div className="mt-7 flex items-center gap-2 overflow-hidden text-[10px]"><span className="rounded-lg border border-border bg-muted px-3 py-2">New message</span><motion.span animate={{ opacity: [.35,1,.35] }} transition={{ repeat: Infinity, duration: 1.6 }}><ChevronRight className="shrink-0 text-cyan"/></motion.span><span className="rounded-lg border border-violet/30 bg-violet/10 px-3 py-2">VIP?</span><motion.span animate={{ opacity: [.35,1,.35] }} transition={{ repeat: Infinity, duration: 1.6, delay: .4 }}><ChevronRight className="shrink-0 text-cyan"/></motion.span><span className="rounded-lg border border-cyan/30 bg-cyan/10 px-3 py-2">Human handoff</span></div></div></GlassCard></div></section>
-
-        <section id="workspace" className="mx-auto max-w-6xl px-5 py-24"><div className="glass-panel relative overflow-hidden rounded-3xl px-6 py-16 text-center md:px-16"><div className="absolute inset-x-1/4 -top-32 h-64 rounded-full bg-cyan/15 blur-[100px]"/><Sparkles className="relative mx-auto text-cyan"/><h2 className="relative mt-5 text-3xl font-bold md:text-5xl">Build the inbox first.<br/>Wire the APIs later.</h2><p className="relative mx-auto mt-4 max-w-xl text-sm text-muted-foreground">Start with every conversation in one place. Your team will feel the difference by lunch.</p>{submitted?<div className="relative mx-auto mt-8 flex w-fit items-center gap-2 rounded-full border border-success/30 bg-success/10 px-5 py-3 text-sm text-success"><Check/> You’re on the list — welcome aboard.</div>:<form className="relative mx-auto mt-8 flex max-w-md flex-col gap-2 sm:flex-row" onSubmit={(e)=>{e.preventDefault();if(email)setSubmitted(true)}}><Input aria-label="Work email" required type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@company.com" className="h-12 rounded-full bg-background/50 px-5"/><Button variant="luminous" size="lg" type="submit">Create workspace <ArrowRight/></Button></form>}</div></section>
+    <div className="relative min-h-screen overflow-x-hidden bg-[#f8fafc] text-slate-900 selection:bg-blue-200/70">
+      <AmbientCanvas />
+      <Navbar />
+      <main id="top" className="relative z-10 pt-28 sm:pt-32">
+        <Hero />
+        <InfiniteCarousel />
+        <GmailInboxShowcase />
+        <FeatureBento />
+        <Pricing />
+        <CTASection />
       </main>
-
-      <footer id="pricing" className="relative z-10 border-t border-border"><div className="mx-auto flex max-w-6xl flex-col gap-8 px-5 py-10 md:flex-row md:items-center"><a href="#top" className="flex items-center gap-2 font-bold"><span className="grid size-7 place-items-center rounded-full bg-primary text-xs text-primary-foreground">k</span>koLink Chat</a><div className="flex flex-wrap gap-5 text-xs text-muted-foreground"><a href="#features">Features</a><a href="#channels">Channels</a><a href="#workspace">Privacy</a><a href="#workspace">Terms</a></div><div className="flex gap-3 text-muted-foreground"><Instagram size={15}/><Twitter size={15}/><Linkedin size={15}/><Mail size={15}/></div><div className="flex items-center gap-2 text-xs text-muted-foreground md:ml-auto"><span className="size-2 rounded-full bg-success"/> All systems operational</div><p className="text-[10px] text-muted-foreground">© 2026 koLink</p></div></footer>
+      <Footer />
     </div>
   );
 }

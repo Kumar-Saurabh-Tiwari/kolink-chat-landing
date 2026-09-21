@@ -11,9 +11,9 @@ const buttonVariants = cva(
       variant: {
         default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
         luminous:
-          "rounded-full bg-primary text-primary-foreground shadow-[0_0_32px_var(--glow-primary)] hover:-translate-y-0.5 hover:bg-primary/90",
+          "rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all",
         glass:
-          "rounded-full border border-border bg-card text-foreground shadow-lg backdrop-blur-xl hover:-translate-y-0.5 hover:border-ring hover:bg-accent",
+          "rounded-full border border-white/80 bg-white/65 text-slate-800 shadow-sm backdrop-blur-xl ring-1 ring-inset ring-white/90 hover:-translate-y-0.5 hover:border-blue-300/60 hover:bg-white/80 hover:shadow-[0_20px_40px_rgba(37,99,235,0.08)]",
         destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
           "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
