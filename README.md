@@ -2,7 +2,7 @@
 
 Marketing site for **koLink Chat** — one luminous inbox for comments, likes, DMs, and Gmail-speed replies.
 
-The tab icon is the same brand mark as the navbar: a sky → indigo tile with a bold **k**. Source: `public/favicon.svg`. Raster copies live at `public/favicon.ico` and `public/apple-touch-icon.png`.
+The tab icon matches the navbar: the koLink chain-link mark from `public/icon.svg`, set in white on a sky → indigo tile.
 
 ## Product scope
 
@@ -62,7 +62,8 @@ Then open the URL Vite prints (typically `http://localhost:8080` or `8081`).
 ## Brand assets
 
 - **Wordmark:** `koLink Chat` in Plus Jakarta Sans
-- **Mark:** rounded square, `#38bdf8 → #2563eb → #4f46e5`, white **k**
+- **Mark:** interlocking chain-link from `public/icon.svg`
+- **App icon:** that mark in white on `#38bdf8 → #2563eb → #4f46e5`
 - **Favicon:** `public/favicon.svg` (preferred) + `public/favicon.ico` fallback
 - **Touch icon:** `public/apple-touch-icon.png` (180×180)
 

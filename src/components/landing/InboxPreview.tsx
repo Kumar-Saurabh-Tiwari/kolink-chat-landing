@@ -1,5 +1,6 @@
 import { AtSign, Bot, Heart, MessageCircle, Search, Send, Sparkles, Workflow, Zap } from "lucide-react";
 import { motion } from "motion/react";
+import { BrandIcon } from "@/components/landing/BrandIcon";
 
 const threads = [
   {
@@ -89,8 +90,8 @@ export function InboxPreview() {
         <div className="pointer-events-none absolute inset-x-12 top-0 h-24 bg-gradient-to-b from-white/80 to-transparent" />
         <div className="flex h-[400px] overflow-hidden rounded-[1.15rem] border border-white/70 bg-white/55 sm:h-[460px] md:h-[540px]">
           <aside className="hidden w-16 shrink-0 flex-col items-center border-r border-slate-200/70 bg-white/40 py-5 sm:flex">
-            <div className="grid size-8 place-items-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-xs font-extrabold text-white shadow-md shadow-blue-500/30">
-              k
+            <div className="grid size-8 place-items-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-md shadow-blue-500/30">
+              <BrandIcon className="size-4" />
             </div>
             <div className="mt-8 grid gap-5 text-slate-400">
               <MessageCircle className="text-blue-600" size={18} />

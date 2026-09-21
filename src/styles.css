@@ -188,6 +188,20 @@ html {
   background-clip: text;
 }
 
+@keyframes headline-shine {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@utility animate-headline-shine {
+  background-size: 220% auto;
+  animation: headline-shine 5s linear infinite;
+}
+
 @utility fade-mask-x {
   mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
   -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
