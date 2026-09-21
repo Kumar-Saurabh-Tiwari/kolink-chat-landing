@@ -52,14 +52,14 @@ function animateIframeScroll(
     onDone?.();
     return () => undefined;
   }
-  const duration = 820;
+  const duration = Math.round(Math.min(5200, Math.max(2400, Math.abs(distance) * 1.25)));
   const t0 = performance.now();
   let frame = 0;
   let hold = true;
   const step = (now: number) => {
     if (!shouldHoldParent()) hold = false;
     const p = Math.min(1, (now - t0) / duration);
-    const eased = 1 - (1 - p) ** 3;
+    const eased = 0.5 - Math.cos(Math.PI * p) / 2;
     win.scrollTo({ left: 0, top: Math.round(start + distance * eased), behavior: "auto" });
     if (hold && (window.scrollX !== parentX || window.scrollY !== parentY)) {
       window.scrollTo({ left: parentX, top: parentY, behavior: "auto" });
@@ -260,7 +260,8 @@ export function IPhoneShowcase({
       stopMotion = animateIframeScroll(first.win, first.target, () => holdParentRef.current, () => {
         const next = measure();
         if (!next) return;
-        if (Math.abs(iframeTop(next.win) - next.target) > 6) {
+        const miss = Math.abs(iframeTop(next.win) - next.target);
+        if (miss > 6 && miss < 28) {
           next.win.scrollTo({ left: 0, top: next.target, behavior: "auto" });
         }
       });
@@ -304,7 +305,7 @@ export function IPhoneShowcase({
         visit(TOUR_IDS[step % TOUR_IDS.length]);
         step += 1;
       }
-      tourTimer = window.setTimeout(tick, 5600);
+      tourTimer = window.setTimeout(tick, 8000);
     };
 
     let started = false;
@@ -319,7 +320,7 @@ export function IPhoneShowcase({
       bindInner();
       visit(TOUR_IDS[0]);
       step = 1;
-      if (!reduceMotion) tourTimer = window.setTimeout(tick, 4800);
+      if (!reduceMotion) tourTimer = window.setTimeout(tick, 7600);
     };
 
     shell.addEventListener("wheel", onShellWheel, { passive: false, capture: true });

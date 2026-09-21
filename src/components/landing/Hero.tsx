@@ -12,6 +12,7 @@ const frost =
   "bg-white/80 backdrop-blur-xl border border-white/90 shadow-lg ring-1 ring-inset ring-white/90";
 
 const leadWords = ["Every", "customer", "conversation."];
+const calmWords = ["One", "calm", "workspace."];
 
 const faces = [
   { initials: "AL", tone: "from-sky-400 to-blue-600" },
@@ -23,22 +24,26 @@ const faces = [
 
 function RadarDot({ reduce }: { reduce: boolean }) {
   return (
-    <span className="relative grid size-3.5 place-items-center" aria-hidden>
+    <span className="relative grid size-4 place-items-center" aria-hidden>
       {reduce ? null : (
         <>
           <motion.span
-            className="absolute size-2.5 rounded-full bg-emerald-400/55"
-            animate={{ scale: [1, 2.8], opacity: [0.65, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
+            className="absolute size-2 rounded-full bg-emerald-400/45 blur-[1.5px]"
+            animate={{ scale: [1, 2.35], opacity: [0.4, 0] }}
+            transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
           />
           <motion.span
-            className="absolute size-2.5 rounded-full bg-emerald-400/40"
-            animate={{ scale: [1, 2.2], opacity: [0.5, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut", delay: 0.5 }}
+            className="absolute size-2 rounded-full bg-emerald-300/35 blur-[2px]"
+            animate={{ scale: [1, 1.9], opacity: [0.28, 0] }}
+            transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", delay: 1.15 }}
           />
         </>
       )}
-      <span className="relative size-2 rounded-full bg-emerald-500 shadow-[0_0_10px_#34d399]" />
+      <motion.span
+        className="relative size-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(52,211,153,0.55)]"
+        animate={reduce ? undefined : { opacity: [0.78, 1, 0.78], scale: [1, 1.06, 1] }}
+        transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+      />
     </span>
   );
 }
@@ -261,19 +266,43 @@ function HeadlineWord({
   delay,
   reduce,
   className,
+  gradient = false,
 }: {
   word: string;
   delay: number;
   reduce: boolean;
   className?: string;
+  gradient?: boolean;
 }) {
   return (
     <span className={cn("inline-block overflow-hidden pb-[0.14em] -mb-[0.14em]", className)}>
       <motion.span
-        initial={reduce ? false : { y: "112%", opacity: 0 }}
-        animate={{ y: "0%", opacity: 1 }}
-        transition={{ delay, duration: 1.05, ease }}
-        className="inline-block will-change-transform"
+        initial={reduce ? false : { y: "70%", opacity: 0 }}
+        animate={
+          gradient && !reduce
+            ? { y: "0%", opacity: 1, backgroundPosition: ["0% 50%", "100% 50%"] }
+            : { y: "0%", opacity: 1 }
+        }
+        transition={
+          gradient && !reduce
+            ? {
+                y: { delay, duration: 0.95, ease },
+                opacity: { delay, duration: 0.95, ease },
+                backgroundPosition: {
+                  duration: 7,
+                  repeat: Infinity,
+                  repeatType: "mirror",
+                  ease: "easeInOut",
+                },
+              }
+            : { delay, duration: 0.95, ease }
+        }
+        className={cn(
+          "inline-block will-change-transform",
+          gradient &&
+            "bg-gradient-to-r from-blue-800 via-indigo-500 to-violet-600 bg-clip-text text-transparent",
+        )}
+        style={gradient ? { backgroundSize: "180% 100%" } : undefined}
       >
         {word}
       </motion.span>
@@ -411,31 +440,22 @@ export function Hero({ embed = false }: { embed?: boolean }) {
             <HeadlineWord
               key={`${word}-${index}`}
               word={word}
-              delay={0.12 + index * 0.08}
+              delay={0.16 + index * 0.14}
               reduce={reduce}
               className="mr-[0.28em]"
             />
           ))}
           <br />
-          <span className="inline-block overflow-hidden pb-[0.14em] -mb-[0.14em]">
-            <motion.span
-              initial={reduce ? false : { y: "112%", opacity: 0 }}
-              animate={{ y: "0%", opacity: 1 }}
-              transition={{ delay: 0.46, duration: 1.1, ease }}
-              className="inline-block will-change-transform"
-            >
-              <motion.span
-                className="bg-gradient-to-r from-blue-800 via-indigo-500 to-violet-600 bg-clip-text text-transparent"
-                style={{ backgroundSize: "220% 100%", WebkitBackgroundClip: "text" }}
-                animate={
-                  reduce ? undefined : { backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }
-                }
-                transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-              >
-                One calm workspace.
-              </motion.span>
-            </motion.span>
-          </span>
+          {calmWords.map((word, index) => (
+            <HeadlineWord
+              key={word}
+              word={word}
+              delay={0.62 + index * 0.16}
+              reduce={reduce}
+              gradient
+              className="mr-[0.26em] last:mr-0"
+            />
+          ))}
         </h1>
 
         <motion.p
