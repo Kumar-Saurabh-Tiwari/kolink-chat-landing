@@ -220,7 +220,7 @@ export function GmailInboxShowcase() {
     const text = draft.trim();
     setSent((current) => ({ ...current, [selected.id]: [...(current[selected.id] ?? []), text] }));
     setDraft("");
-    setToast(via === "gmail" ? "Sent via Gmail two-way sync" : "Handed off to WhatsApp Cloud API");
+    setToast(via === "gmail" ? "Sent via Gmail two-way sync" : "Handed off to WhatsApp");
   }
 
   return (

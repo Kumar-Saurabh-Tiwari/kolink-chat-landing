@@ -39,7 +39,7 @@ const channels: Channel[] = [
   {
     key: "instagram",
     name: "Instagram",
-    ping: "Meta Cloud API: 18ms",
+    ping: "Official Meta Integration",
     tags: ["Auto-Likes", "Reel Comments", "DM Automation"],
     tickers: ["1.2k comments processed today", "99.98% delivery rate"],
     halo: "bg-[radial-gradient(circle_at_30%_20%,rgba(253,244,151,0.85),rgba(214,36,159,0.35)_42%,transparent_70%)]",
@@ -48,7 +48,7 @@ const channels: Channel[] = [
   {
     key: "facebook",
     name: "Facebook",
-    ping: "Page inbox: 22ms",
+    ping: "Real-Time Sync Active",
     tags: ["Post Likes", "Ad Comments", "Visitor Posts"],
     tickers: ["814 post replies routed", "Collision lock on 12 threads"],
     halo: "bg-[radial-gradient(circle_at_30%_20%,rgba(24,119,242,0.35),transparent_68%)]",
@@ -57,17 +57,17 @@ const channels: Channel[] = [
   {
     key: "messenger",
     name: "Messenger",
-    ping: "Click-to-message: 9ms",
-    tags: ["Ads CTM", "Icebreakers", "Two-way Inbox"],
-    tickers: ["CTM ads converted 186 chats", "Active two-way sync"],
+    ping: "1-Click Direct Sync",
+    tags: ["Click-to-message ads", "Welcome prompts", "Two-way Inbox"],
+    tickers: ["Ad chats started 186 conversations", "Active two-way sync"],
     halo: "bg-[radial-gradient(circle_at_30%_20%,rgba(0,178,255,0.4),rgba(160,51,255,0.22)_55%,transparent_72%)]",
     glow: "hover:shadow-[0_16px_36px_-12px_rgba(0,106,255,0.3)]",
   },
   {
     key: "whatsapp",
     name: "WhatsApp",
-    ping: "Meta Cloud API: 12ms",
-    tags: ["Template API", "Catalog Sync", "Utility Msgs"],
+    ping: "Official Meta Integration",
+    tags: ["Message templates", "Catalog Sync", "Order updates"],
     tickers: ["Catalog DMs delivered 2.1k", "99.98% delivery rate"],
     halo: "bg-[radial-gradient(circle_at_30%_20%,rgba(37,211,102,0.42),transparent_68%)]",
     glow: "hover:shadow-[0_16px_36px_-12px_rgba(37,211,102,0.32)]",
@@ -77,14 +77,14 @@ const channels: Channel[] = [
     name: "Threads",
     ping: "Active two-way sync",
     tags: ["Replies", "@Mentions", "Publishing"],
-    tickers: ["Mention queue cleared 94%", "Reply SLA 1.4s"],
+    tickers: ["Mention queue cleared 94%", "Replies in 1.4s"],
     halo: "bg-[radial-gradient(circle_at_30%_20%,rgba(15,23,42,0.18),transparent_68%)]",
     glow: "hover:shadow-[0_16px_36px_-12px_rgba(15,23,42,0.18)]",
   },
   {
     key: "x",
     name: "X / Twitter",
-    ping: "Stream live · 14ms",
+    ping: "Real-Time Sync Active",
     tags: ["DMs", "Mention Replies", "Auto-Likes"],
     tickers: ["Tweet likes compounded +19%", "DM inbox at 0 backlog"],
     halo: "bg-[radial-gradient(circle_at_30%_20%,rgba(15,20,25,0.2),transparent_68%)]",
@@ -93,7 +93,7 @@ const channels: Channel[] = [
   {
     key: "linkedin",
     name: "LinkedIn",
-    ping: "Company page: 27ms",
+    ping: "1-Click Direct Sync",
     tags: ["Comments", "Reactions", "Inbox"],
     tickers: ["Enterprise comments triaged", "Active two-way sync"],
     halo: "bg-[radial-gradient(circle_at_30%_20%,rgba(10,102,194,0.38),transparent_68%)]",
@@ -141,7 +141,7 @@ function ChannelCard({ channel }: { channel: Channel }) {
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
             <p className="truncate text-sm font-bold text-slate-900">{channel.name}</p>
-            <LivePing label={channel.ping} className="max-w-[9.5rem] normal-case tracking-normal" />
+            <LivePing label={channel.ping} className="max-w-[12rem] shrink-0 normal-case tracking-normal" />
           </div>
           <div className="mt-2 flex flex-wrap gap-1">
             {channel.tags.map((tag) => (

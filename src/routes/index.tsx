@@ -12,20 +12,20 @@ import { Pricing } from "@/components/landing/Pricing";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "koLink Chat — Chat marketing & engagement, without the tab chaos." },
+      { title: "koLink Chat — Every customer conversation. One calm workspace." },
       {
         name: "description",
         content:
-          "Unify conversations, automate comments and likes, empower your support team, and manage complete customer profiles across every social platform.",
+          "Bring social DMs, comments, likes, and Instagram & Facebook insights into one workspace — across every channel.",
       },
       {
         property: "og:title",
-        content: "koLink Chat — Chat marketing & engagement, without the tab chaos.",
+        content: "koLink Chat — Every customer conversation. One calm workspace.",
       },
       {
         property: "og:description",
         content:
-          "One luminous inbox for Instagram, Facebook, Messenger, WhatsApp, Threads, X, LinkedIn, and Email.",
+          "One luminous inbox for every channel — Instagram, Facebook, Messenger, WhatsApp, and more.",
       },
       { property: "og:type", content: "website" },
       { property: "og:image", content: "/apple-touch-icon.png" },

@@ -13,7 +13,7 @@ import {
   Workflow,
   Zap,
 } from "lucide-react";
-import { useEffect, useId, useState } from "react";
+import { Fragment, useEffect, useId, useState } from "react";
 import { GlassCard } from "@/components/landing/GlassCard";
 import { Reveal, Stagger, StaggerItem } from "@/components/landing/Reveal";
 import { GmailMark, InstagramMark, WhatsAppMark } from "@/components/landing/BrandMarks";
@@ -388,14 +388,46 @@ function ContactCard() {
   );
 }
 
+function FlowConnector({
+  active,
+  reduce,
+  from,
+  to,
+}: {
+  active: boolean;
+  reduce: boolean;
+  from: string;
+  to: string;
+}) {
+  return (
+    <div className="relative mx-1 flex h-7 w-4 shrink-0 items-center overflow-hidden sm:w-6">
+      <span className="absolute inset-x-0 h-px bg-slate-200/90" />
+      <motion.span
+        className="absolute inset-x-0 h-[2px] origin-left rounded-full"
+        style={{ backgroundImage: `linear-gradient(90deg, ${from}, ${to})` }}
+        animate={{ scaleX: active ? 1 : 0.2, opacity: active ? 1 : 0.45 }}
+        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      />
+      {reduce ? null : (
+        <motion.span
+          className="absolute top-1/2 size-1.5 -translate-y-1/2 rounded-full shadow-[0_0_8px_rgba(56,189,248,0.8)]"
+          style={{ backgroundColor: active ? to : from }}
+          animate={{ left: ["0%", "78%"] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+        />
+      )}
+    </div>
+  );
+}
+
 function FlowCanvas() {
-  const id = useId().replace(/:/g, "");
-  const reduce = useReducedMotion();
+  const reduceMotion = useReducedMotion();
+  const reduce = Boolean(reduceMotion);
   const [step, setStep] = useState(0);
   const [executed, setExecuted] = useState(4892);
 
   useEffect(() => {
-    const run = window.setInterval(() => setStep((value) => (value + 1) % 3), 1700);
+    const run = window.setInterval(() => setStep((value) => (value + 1) % 3), 1800);
     const count = window.setInterval(() => setExecuted((value) => value + 1), 2400);
     return () => {
       window.clearInterval(run);
@@ -404,9 +436,9 @@ function FlowCanvas() {
   }, []);
 
   const logs = [
-    { tone: "text-sky-700", text: "Trigger · comment contains “Price”" },
-    { tone: "text-violet-700", text: "Logic · follower = true" },
-    { tone: "text-emerald-700", text: "Action · like + WhatsApp + CRM tag" },
+    { tone: "text-sky-700", text: "Trigger matched “Price” on Instagram" },
+    { tone: "text-violet-700", text: "Logic passed · follower = true" },
+    { tone: "text-emerald-700", text: "Action delivered · like + WhatsApp + CRM" },
   ] as const;
   const activeLog = logs[step] ?? logs[0];
 
@@ -414,151 +446,196 @@ function FlowCanvas() {
     {
       id: 0,
       label: "Trigger",
-      sub: 'Comment contains ["Price", "Info"]',
+      body: "“Price” or “Info”",
       icon: Zap,
-      on: "border-sky-300 bg-sky-50 text-sky-800",
-      glow: "shadow-[0_0_22px_rgba(56,189,248,0.45)]",
+      iconWrap: "from-sky-400 to-blue-600 shadow-sky-500/35",
+      ring: "border-sky-200/90 shadow-[0_12px_28px_-14px_rgba(14,165,233,0.55)]",
     },
     {
       id: 1,
       label: "Logic",
-      sub: "If user follows account",
+      body: "Follows account?",
       icon: Filter,
-      on: "border-violet-300 bg-violet-50 text-violet-800",
-      glow: "shadow-[0_0_22px_rgba(129,140,248,0.5)]",
+      iconWrap: "from-violet-400 to-indigo-600 shadow-violet-500/35",
+      ring: "border-violet-200/90 shadow-[0_12px_28px_-14px_rgba(139,92,246,0.5)]",
     },
     {
       id: 2,
       label: "Action",
-      sub: "Auto-like + WhatsApp + CRM",
+      body: "Like + coupon + CRM",
       icon: Sparkles,
-      on: "border-emerald-300 bg-emerald-50 text-emerald-800",
-      glow: "shadow-[0_0_22px_rgba(52,211,153,0.5)]",
+      iconWrap: "from-emerald-400 to-teal-600 shadow-emerald-500/35",
+      ring: "border-emerald-200/90 shadow-[0_12px_28px_-14px_rgba(16,185,129,0.5)]",
     },
   ];
 
+  const results = [
+    { label: "Comment auto-liked" },
+    { label: "WhatsApp coupon sent" },
+    { label: "CRM · High intent" },
+  ];
+
   return (
-    <div className="relative mt-5 flex min-h-[17rem] flex-1 flex-col overflow-hidden rounded-2xl border border-white/80 bg-[radial-gradient(circle_at_20%_0%,rgba(56,189,248,0.16),transparent_42%),radial-gradient(circle_at_90%_80%,rgba(52,211,153,0.14),transparent_40%),rgba(248,250,252,0.9)] p-3">
-      <div className="relative z-[1] mb-3 flex items-center justify-between gap-2">
-        <LivePing label={`${executed.toLocaleString()} flows today`} className="normal-case tracking-normal" />
-        <span className="rounded-full bg-white/80 px-2 py-0.5 text-[10px] font-bold text-emerald-700 ring-1 ring-emerald-100">
+    <div className="relative mt-5 flex min-h-[19.5rem] flex-1 flex-col overflow-hidden rounded-2xl border border-white/80 bg-white/55 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_0%,rgba(56,189,248,0.16),transparent_34%),radial-gradient(circle_at_88%_100%,rgba(52,211,153,0.14),transparent_36%),radial-gradient(circle_at_70%_0%,rgba(167,139,250,0.12),transparent_32%)]" />
+      <div className="pointer-events-none absolute inset-0 opacity-[0.32] [background-image:radial-gradient(rgba(15,23,42,0.09)_0.7px,transparent_0.7px)] [background-size:14px_14px]" />
+
+      <div className="relative z-[1] flex items-center gap-2 border-b border-white/80 bg-white/55 px-3 py-2 backdrop-blur-xl">
+        <LivePing label="Live canvas" className="normal-case tracking-normal" />
+        <span className="truncate text-[10px] font-semibold text-slate-500">
+          {executed.toLocaleString()} runs
+        </span>
+        <span className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-white/80 bg-white/80 px-2 py-0.5 text-[10px] font-bold text-slate-600 shadow-sm">
+          <motion.span
+            animate={reduce ? { scale: 1 } : { scale: [1, 1.14, 1] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+            className="grid size-4 place-items-center rounded-full bg-slate-900 text-white"
+          >
+            <Play size={8} fill="currentColor" />
+          </motion.span>
+          Running
+        </span>
+        <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 ring-1 ring-emerald-100">
           0 errors
         </span>
       </div>
 
-      <div className="relative z-[1] min-h-[9.5rem] flex-1">
-        <svg viewBox="0 0 640 160" className="absolute inset-0 h-full w-full" preserveAspectRatio="none" aria-hidden>
-          <defs>
-            <linearGradient id={`${id}-flow`} x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#38bdf8" />
-              <stop offset="50%" stopColor="#818cf8" />
-              <stop offset="100%" stopColor="#34d399" />
-            </linearGradient>
-            <filter id={`${id}-glow`} x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="2.8" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-          <path
-            d="M 130 52 C 200 52, 230 52, 320 52"
-            fill="none"
-            stroke={`url(#${id}-flow)`}
-            strokeWidth="2.4"
-            strokeDasharray="6 8"
-            className="animate-flow-dash"
-            filter={`url(#${id}-glow)`}
-          />
-          <path
-            d="M 320 52 C 410 52, 440 52, 510 52"
-            fill="none"
-            stroke={`url(#${id}-flow)`}
-            strokeWidth="2.4"
-            strokeDasharray="6 8"
-            className="animate-flow-dash"
-            filter={`url(#${id}-glow)`}
-          />
-          {reduce
-            ? null
-            : [0, 0.85].map((delay) => (
-                <g key={delay} filter={`url(#${id}-glow)`}>
-                  <circle r="5" fill="#38bdf8">
-                    <animateMotion
-                      dur="2.1s"
-                      begin={`${delay}s`}
-                      repeatCount="indefinite"
-                      path="M 130 52 C 200 52, 230 52, 320 52"
-                    />
-                  </circle>
-                  <circle r="5" fill="#34d399">
-                    <animateMotion
-                      dur="2.1s"
-                      begin={`${delay + 0.25}s`}
-                      repeatCount="indefinite"
-                      path="M 320 52 C 410 52, 440 52, 510 52"
-                    />
-                  </circle>
-                </g>
-              ))}
-        </svg>
-
-        <div className="relative grid h-full grid-cols-3 items-start gap-2 pt-1">
-          {nodes.map((node) => {
+      <div className="relative z-[1] flex flex-1 flex-col gap-3 p-3 sm:p-3.5">
+        <div className="flex items-stretch">
+          {nodes.map((node, index) => {
             const Icon = node.icon;
-            const active = step === node.id || step > node.id;
+            const lit = step === node.id || step > node.id;
+            const current = step === node.id;
             return (
-              <motion.div
-                key={node.label}
-                animate={{ scale: active ? 1.03 : 1, y: active ? -2 : 0 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className={cn(
-                  "rounded-2xl border bg-white/85 px-2.5 py-2.5 shadow-sm ring-1 ring-white/80",
-                  active ? node.on : "border-white text-slate-600",
-                  active ? node.glow : "",
-                )}
-              >
-                <div className="flex items-center gap-1.5">
-                  <span className="grid size-6 place-items-center rounded-lg bg-white">
-                    <Icon size={13} />
-                  </span>
-                  <p className="text-[11px] font-bold">{node.label}</p>
-                </div>
-                <p className="mt-1 text-[9px] font-medium leading-4 opacity-80">{node.sub}</p>
-                {node.id === 1 ? (
-                  <div className="mt-1.5 flex gap-1">
+              <Fragment key={node.label}>
+                <motion.div
+                  animate={{ y: current ? -3 : 0 }}
+                  transition={{ type: "spring", stiffness: 320, damping: 22 }}
+                  className={cn(
+                    "relative min-w-0 flex-1 rounded-2xl border bg-white/90 px-2 py-2 backdrop-blur-xl ring-1 ring-inset ring-white/90 sm:px-2.5 sm:py-2.5",
+                    lit ? node.ring : "border-white/80 shadow-[0_10px_24px_-16px_rgba(15,23,42,0.18)]",
+                  )}
+                >
+                  <div className="flex items-center gap-1.5">
                     <span
                       className={cn(
-                        "rounded-full px-1.5 py-0.5 text-[8px] font-bold",
-                        step >= 1 ? "bg-emerald-500 text-white" : "bg-white text-slate-400",
+                        "relative grid size-6 shrink-0 place-items-center rounded-lg bg-gradient-to-br text-white shadow-md sm:size-7 sm:rounded-xl",
+                        node.iconWrap,
                       )}
                     >
-                      True
+                      <Icon size={12} />
+                      {lit && !current ? (
+                        <span className="absolute -right-1 -top-1 grid size-3.5 place-items-center rounded-full bg-white text-emerald-500 shadow-sm">
+                          <Check size={8} />
+                        </span>
+                      ) : null}
                     </span>
-                    <span className="rounded-full bg-white px-1.5 py-0.5 text-[8px] font-bold text-slate-400">
-                      False
-                    </span>
+                    <p className="min-w-0 flex-1 text-[10px] font-bold leading-4 text-slate-900 sm:text-[11px]">
+                      {node.label}
+                    </p>
+                    {current ? (
+                      <span className="size-1.5 shrink-0 rounded-full bg-sky-500 shadow-[0_0_8px_#38bdf8]" />
+                    ) : null}
                   </div>
+                  <p className="mt-2 rounded-lg bg-slate-50/90 px-1.5 py-1 text-[9px] font-medium leading-4 text-slate-600 sm:px-2">
+                    {node.body}
+                  </p>
+                  {node.id === 0 ? (
+                    <div className="mt-1.5 flex items-center gap-1">
+                      <InstagramMark className="size-3.5" />
+                      <span className="text-[8px] font-bold uppercase tracking-wide text-slate-400">
+                        Instagram
+                      </span>
+                    </div>
+                  ) : null}
+                  {node.id === 1 ? (
+                    <div className="mt-1.5 flex gap-1">
+                      <span
+                        className={cn(
+                          "rounded-full px-1.5 py-0.5 text-[8px] font-bold",
+                          step >= 1
+                            ? "bg-emerald-500 text-white"
+                            : "bg-white text-slate-400 ring-1 ring-slate-200",
+                        )}
+                      >
+                        True
+                      </span>
+                      <span className="rounded-full bg-white px-1.5 py-0.5 text-[8px] font-bold text-slate-400 ring-1 ring-slate-200">
+                        False
+                      </span>
+                    </div>
+                  ) : null}
+                  {node.id === 2 ? (
+                    <div className="mt-1.5 flex items-center gap-1">
+                      <WhatsAppMark className="size-3.5" />
+                      <span className="text-[8px] font-bold uppercase tracking-wide text-slate-400">
+                        WhatsApp
+                      </span>
+                    </div>
+                  ) : null}
+                </motion.div>
+                {index < nodes.length - 1 ? (
+                  <FlowConnector
+                    active={step > index}
+                    reduce={reduce}
+                    from={index === 0 ? "#38bdf8" : "#818cf8"}
+                    to={index === 0 ? "#818cf8" : "#34d399"}
+                  />
                 ) : null}
-              </motion.div>
+              </Fragment>
             );
           })}
         </div>
+
+        <div className="rounded-xl border border-white/80 bg-white/75 p-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-xl">
+          <p className="text-[9px] font-bold uppercase tracking-wide text-slate-400">Run output</p>
+          <div className="mt-1.5 grid gap-1 sm:grid-cols-3">
+            {results.map((row) => {
+              const ok = step >= 2;
+              return (
+                <div key={row.label} className="flex items-center gap-1.5">
+                  <span
+                    className={cn(
+                      "grid size-3.5 place-items-center rounded-full",
+                      ok ? "bg-emerald-500 text-white" : "bg-slate-200 text-slate-400",
+                    )}
+                  >
+                    <Check size={8} />
+                  </span>
+                  <p className={cn("text-[10px] font-semibold", ok ? "text-slate-800" : "text-slate-400")}>
+                    {row.label}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
-      <div className="relative z-[1] mt-3 flex items-center justify-between gap-2 rounded-xl bg-white/90 px-3 py-2 ring-1 ring-white">
+      <div className="relative z-[1] flex items-center gap-2 border-t border-white/80 bg-white/70 px-3 py-2 backdrop-blur-xl">
         <AnimatePresence mode="wait">
           <motion.p
             key={activeLog.text}
-            initial={{ opacity: 0, x: 8 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -8 }}
-            className={cn("min-w-0 truncate text-[11px] font-semibold", activeLog.tone)}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.22 }}
+            className={cn("min-h-4 min-w-0 flex-1 truncate text-[11px] font-semibold", activeLog.tone)}
           >
             {activeLog.text}
           </motion.p>
         </AnimatePresence>
+        <div className="flex items-center gap-1">
+          {[0, 1, 2].map((index) => (
+            <span
+              key={index}
+              className={cn(
+                "h-1 w-4 rounded-full sm:w-5",
+                index <= step ? "bg-gradient-to-r from-sky-400 to-emerald-400" : "bg-slate-200",
+              )}
+            />
+          ))}
+        </div>
         <span className="shrink-0 rounded-full bg-slate-900 px-2 py-0.5 text-[10px] font-bold text-white">
           {step + 1}/3
         </span>
@@ -627,11 +704,12 @@ export function FeatureBento() {
 
         <StaggerItem className="h-full min-h-0">
           <GlassCard id="automations" className="h-full min-h-[34rem] p-6 sm:p-7">
-            <div className="mb-4 grid size-11 place-items-center rounded-2xl bg-violet-50 text-violet-600 ring-1 ring-violet-100">
+            <div className="relative mb-4 grid size-11 place-items-center rounded-2xl bg-gradient-to-br from-violet-50 to-indigo-50 text-violet-600 ring-1 ring-violet-100">
+              <span className="animate-breathe absolute inset-[-6px] rounded-2xl bg-violet-400/25 blur-md" />
               <motion.span
                 animate={{ rotate: [0, 12, -8, 0] }}
                 transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
-                className="grid place-items-center"
+                className="relative grid place-items-center"
               >
                 <Workflow size={20} />
               </motion.span>

@@ -60,7 +60,7 @@ export function Navbar() {
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-70" />
               <span className="relative size-1.5 rounded-full bg-emerald-500" />
             </span>
-            API: 99.98%
+            Real-Time Sync Active
           </span>
         </div>
         <div className="hidden items-center gap-5 xl:gap-7 lg:flex">

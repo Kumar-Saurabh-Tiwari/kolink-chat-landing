@@ -232,7 +232,7 @@ export function InboxPreview() {
         Sarah assigned · live
       </motion.div>
       <div className="mt-5 flex flex-wrap justify-center gap-2">
-        {["4.2s Avg Response Time", "100% Inbound Capture", "8 Active Channels"].map((chip) => (
+        {["4.2s Avg Response Time", "100% Inbound Capture", "All your channels"].map((chip) => (
           <span
             key={chip}
             className="glass-panel rounded-full px-3 py-1.5 text-[11px] font-semibold text-slate-600 ring-1 ring-inset ring-white/95"
