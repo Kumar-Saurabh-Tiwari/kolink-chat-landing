@@ -1,4 +1,4 @@
-# Aurora Inbox
+# Kolink-Chat-Landing
 
 Here is a complete overhaul plan and a production-ready prompt engineered for tools like Cursor, Claude (Artifacts/v0), or ChatGPT to rebuild your koLink Chat landing page into a cutting-edge, ultra-smooth glassmorphism SaaS experience.
 
