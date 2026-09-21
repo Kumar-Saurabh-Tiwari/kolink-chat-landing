@@ -27,7 +27,7 @@ function NavLink({ href, label, onClick }: { href: string; label: string; onClic
   );
 }
 
-export function Navbar() {
+export function Navbar({ compact = false }: { compact?: boolean }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -46,15 +46,23 @@ export function Navbar() {
   }, [open]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:pt-5">
+    <header
+      className={cn(
+        compact
+          ? "relative z-40 px-2 pb-1 pt-2"
+          : "fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:pt-5",
+      )}
+    >
       <nav
         className={cn(
           "mx-auto flex max-w-6xl items-center justify-between rounded-full border border-white/90 bg-white/80 px-4 py-3 shadow-sm backdrop-blur-xl transition-shadow sm:px-6",
           scrolled && "shadow-[0_8px_32px_rgba(15,23,42,0.08)]",
+          compact && "px-3 py-2 sm:px-4",
         )}
       >
         <div className="flex min-w-0 items-center gap-2 sm:gap-3">
           <Logo />
+          {compact ? null : (
           <span className="hidden items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-700 ring-1 ring-emerald-100 lg:inline-flex">
             <span className="relative flex size-1.5">
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-70" />
@@ -62,6 +70,7 @@ export function Navbar() {
             </span>
             Real-Time Sync Active
           </span>
+          )}
         </div>
         <div className="hidden items-center gap-5 xl:gap-7 lg:flex">
           {links.map((link) => (

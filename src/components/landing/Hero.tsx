@@ -3,6 +3,7 @@ import { ArrowRight, CirclePlay, Heart, Lock, Send, Star, TrendingUp } from "luc
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { InboxPreview } from "@/components/landing/InboxPreview";
+import { IPhoneShowcase } from "@/components/landing/IPhoneShowcase";
 import { FacebookMark, InstagramMark } from "@/components/landing/BrandMarks";
 import { cn } from "@/lib/utils";
 
@@ -104,41 +105,43 @@ function TypingDots({ className }: { className?: string }) {
 
 function EngagementCard({
   reduce,
+  stable = false,
   className,
 }: {
   reduce: boolean;
+  stable?: boolean;
   className?: string;
 }) {
   return (
     <motion.div
-      initial={reduce ? false : { opacity: 0, x: -28, y: 16 }}
+      initial={reduce ? false : stable ? { opacity: 0 } : { opacity: 0, x: -20, y: 12 }}
       animate={{ opacity: 1, x: 0, y: 0 }}
-      transition={{ delay: 0.72, duration: 0.7, ease }}
+      transition={{ delay: stable ? 0.15 : 0.72, duration: 0.6, ease }}
       className={cn("transform-gpu", className)}
     >
       <motion.article
-        animate={reduce ? undefined : { y: [0, -10, 0] }}
-        transition={{ duration: 5.6, repeat: Infinity, ease: "easeInOut" }}
-        className={cn(frost, "w-full rounded-2xl p-3.5 text-left shadow-slate-900/5")}
+        animate={reduce || stable ? undefined : { y: [0, -8, 0] }}
+        transition={{ duration: 6.4, repeat: Infinity, ease: "easeInOut" }}
+        className={cn(frost, "w-full rounded-xl p-2.5 text-left shadow-slate-900/5")}
       >
-        <div className="flex items-center gap-2">
-          <InstagramMark className="size-5" />
-          <p className="text-[11px] font-semibold text-slate-700">Incoming comment</p>
-          <span className="ml-auto text-[10px] font-medium text-slate-400">just now</span>
+        <div className="flex items-center gap-1.5">
+          <InstagramMark className="size-4" />
+          <p className="text-[10px] font-semibold text-slate-700">Incoming comment</p>
+          <span className="ml-auto text-[9px] font-medium text-slate-400">just now</span>
         </div>
-        <div className="mt-3 flex gap-2.5">
-          <span className="grid size-9 shrink-0 place-items-center rounded-full bg-gradient-to-br from-fuchsia-400 to-rose-500 text-[10px] font-bold text-white shadow-sm">
+        <div className="mt-2 flex gap-2">
+          <span className="grid size-7 shrink-0 place-items-center rounded-full bg-gradient-to-br from-fuchsia-400 to-rose-500 text-[9px] font-bold text-white shadow-sm">
             MC
           </span>
           <div className="min-w-0 flex-1">
-            <p className="text-[12px] font-semibold text-slate-900">Maya Chen</p>
-            <p className="mt-0.5 text-[12px] leading-5 text-slate-600">
+            <p className="text-[11px] font-semibold text-slate-900">Maya Chen</p>
+            <p className="mt-0.5 text-[10px] leading-4 text-slate-600">
               “This drop is stunning — what’s the price on the creator bundle?”
             </p>
           </div>
         </div>
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center gap-1 rounded-full border border-rose-100 bg-rose-50/90 px-2 py-1 text-[10px] font-bold text-rose-600">
+        <div className="mt-2 flex flex-wrap items-center gap-1.5">
+          <span className="inline-flex items-center gap-1 rounded-full border border-rose-100 bg-rose-50/90 px-1.5 py-0.5 text-[9px] font-bold text-rose-600">
             <PoppingHeart reduce={reduce} />
             Auto-Liked
           </span>
@@ -149,27 +152,27 @@ function EngagementCard({
                 : { opacity: [0.55, 1, 1], scale: [0.96, 1.04, 1] }
             }
             transition={{ duration: 1.6, repeat: Infinity, repeatDelay: 0.9, ease: "easeInOut" }}
-            className="inline-flex items-center gap-1.5 rounded-full border border-sky-100 bg-sky-50 px-2.5 py-1 text-[10px] font-bold text-sky-700"
+            className="inline-flex items-center gap-1 rounded-full border border-sky-100 bg-sky-50 px-1.5 py-0.5 text-[9px] font-bold text-sky-700"
           >
-            <Send className="size-3" />
+            <Send className="size-2.5" />
             DM Sent
           </motion.span>
         </div>
-        <div className="mt-3 rounded-xl border border-emerald-100/90 bg-emerald-50/80 px-2.5 py-2">
-          <div className="flex items-center gap-1.5">
-            <TrendingUp className="size-3.5 text-emerald-600" />
-            <span className="text-[9px] font-bold uppercase tracking-wide text-emerald-700">
+        <div className="mt-2 rounded-lg border border-emerald-100/90 bg-emerald-50/80 px-2 py-1.5">
+          <div className="flex items-center gap-1">
+            <TrendingUp className="size-3 text-emerald-600" />
+            <span className="text-[8px] font-bold uppercase tracking-wide text-emerald-700">
               Live insights
             </span>
             <span className="ml-auto inline-flex items-center gap-1">
-              <InstagramMark className="size-3.5" />
-              <FacebookMark className="size-3.5" />
+              <InstagramMark className="size-3" />
+              <FacebookMark className="size-3" />
             </span>
           </div>
-          <p className="mt-1 text-[10px] font-semibold leading-4 text-slate-700">
+          <p className="mt-0.5 text-[9px] font-semibold leading-snug text-slate-700">
             Instagram & Facebook Insights: +42% Engagement & Reach
           </p>
-          <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-emerald-100">
+          <div className="mt-1 h-1 overflow-hidden rounded-full bg-emerald-100">
             <motion.span
               className="block h-full rounded-full bg-gradient-to-r from-emerald-400 to-sky-500"
               initial={{ width: "18%" }}
@@ -185,39 +188,41 @@ function EngagementCard({
 
 function CollisionCard({
   reduce,
+  stable = false,
   className,
 }: {
   reduce: boolean;
+  stable?: boolean;
   className?: string;
 }) {
   return (
     <motion.div
-      initial={reduce ? false : { opacity: 0, x: 28, y: 18 }}
+      initial={reduce ? false : stable ? { opacity: 0 } : { opacity: 0, y: 12 }}
       animate={{ opacity: 1, x: 0, y: 0 }}
-      transition={{ delay: 0.88, duration: 0.7, ease }}
+      transition={{ delay: stable ? 0.22 : 0.88, duration: 0.6, ease }}
       className={cn("transform-gpu", className)}
     >
       <motion.article
-        animate={reduce ? undefined : { y: [0, -12, 0] }}
-        transition={{ duration: 6.2, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
-        className={cn(frost, "w-full rounded-2xl p-3.5 text-left shadow-slate-900/5")}
+        animate={reduce || stable ? undefined : { y: [0, -8, 0] }}
+        transition={{ duration: 6.8, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+        className={cn(frost, "w-full rounded-xl p-2.5 text-left shadow-slate-900/5")}
       >
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
           <span className="relative shrink-0">
-            <span className="grid size-9 place-items-center rounded-full bg-gradient-to-br from-violet-400 to-indigo-500 text-[11px] font-bold text-white shadow-sm ring-2 ring-white">
+            <span className="grid size-7 place-items-center rounded-full bg-gradient-to-br from-violet-400 to-indigo-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
               S
             </span>
-            <span className="absolute -bottom-0.5 -right-0.5 size-2.5 rounded-full border-2 border-white bg-emerald-400" />
+            <span className="absolute -bottom-0.5 -right-0.5 size-2 rounded-full border-2 border-white bg-emerald-400" />
           </span>
           <div className="min-w-0 flex-1">
-            <p className="text-[12px] font-semibold text-slate-900">Sarah is typing...</p>
+            <p className="text-[11px] font-semibold leading-none text-slate-900">Sarah is typing...</p>
             <TypingDots className="mt-1" />
           </div>
         </div>
-        <p className="mt-3 rounded-xl bg-slate-50/80 px-2.5 py-2 text-[11px] leading-4 text-slate-500">
+        <p className="mt-2 rounded-lg bg-slate-50/80 px-2 py-1.5 text-[10px] leading-snug text-slate-500">
           Maya asked about Berlin shipping — keeping this thread calm and single-threaded.
         </p>
-        <span className="relative mt-3 inline-flex">
+        <span className="relative mt-2 inline-flex">
           {reduce ? null : (
             <motion.span
               className="absolute inset-0 rounded-full bg-amber-300/35"
@@ -225,19 +230,19 @@ function CollisionCard({
               transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
             />
           )}
-          <span className="relative inline-flex items-center gap-1.5 rounded-full border border-amber-200/80 bg-amber-50 px-2.5 py-1 text-[10px] font-bold text-amber-800">
-            <Lock className="size-3" />
+          <span className="relative inline-flex items-center gap-1 rounded-full border border-amber-200/80 bg-amber-50 px-2 py-0.5 text-[9px] font-bold text-amber-800">
+            <Lock className="size-2.5" />
             Thread Locked (Anti-Collision)
           </span>
         </span>
-        <div className="mt-3 rounded-xl border border-emerald-100/90 bg-white/70 px-2.5 py-2">
+        <div className="mt-2 rounded-lg border border-emerald-100/90 bg-white/70 px-2 py-1.5">
           <div className="flex items-center justify-between gap-2">
-            <p className="text-[10px] font-bold text-emerald-700">98% Positive Feedback</p>
+            <p className="text-[9px] font-bold text-emerald-700">98% Positive Feedback</p>
             <span className="rounded-full bg-emerald-50 px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wide text-emerald-600">
               Sentiment
             </span>
           </div>
-          <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-slate-100">
+          <div className="mt-1 h-1 overflow-hidden rounded-full bg-slate-100">
             <motion.span
               className="block h-full rounded-full bg-gradient-to-r from-emerald-400 to-teal-500"
               initial={{ width: "22%" }}
@@ -365,19 +370,27 @@ function TourCta({ reduce }: { reduce: boolean }) {
   );
 }
 
-export function Hero() {
+export function Hero({ embed = false }: { embed?: boolean }) {
   const reduceMotion = useReducedMotion();
   const reduce = Boolean(reduceMotion);
 
   return (
-    <section className="relative mx-auto max-w-7xl px-5">
+    <section className="relative mx-auto max-w-[90rem] overflow-x-clip px-5 sm:px-6">
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden>
         <div className="absolute left-[6%] top-8 h-64 w-64 rounded-full bg-sky-300/45 blur-[90px]" />
         <div className="absolute right-[8%] top-16 h-72 w-72 rounded-full bg-violet-300/40 blur-[100px]" />
         <div className="absolute bottom-24 left-1/2 h-56 w-56 -translate-x-1/2 rounded-full bg-emerald-200/50 blur-[90px]" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-3xl text-center">
+      <div className="relative z-10 xl:grid xl:grid-cols-[200px_minmax(0,1fr)_256px] xl:items-start xl:gap-x-8 2xl:grid-cols-[210px_minmax(0,1fr)_268px] 2xl:gap-x-12">
+        {embed ? null : (
+          <div className="hidden xl:flex xl:flex-col xl:gap-2.5 xl:pt-10">
+            <EngagementCard reduce={reduce} />
+            <CollisionCard reduce={reduce} />
+          </div>
+        )}
+
+        <div className={cn("mx-auto max-w-2xl text-center xl:max-w-[40rem] xl:pt-2", embed && "xl:col-span-3")}>
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -393,7 +406,7 @@ export function Hero() {
           </span>
         </motion.div>
 
-        <h1 className="mx-auto mt-7 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl md:text-6xl">
+        <h1 className="mx-auto mt-8 text-[2.35rem] font-extrabold leading-[1.08] tracking-tight text-slate-950 sm:text-5xl xl:mt-10 xl:text-[3.15rem] 2xl:text-6xl">
           {leadWords.map((word, index) => (
             <HeadlineWord
               key={`${word}-${index}`}
@@ -429,7 +442,7 @@ export function Hero() {
           initial={reduce ? false : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.72, duration: 0.85, ease }}
-          className="mx-auto mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg"
+          className="mx-auto mt-6 max-w-xl text-base leading-7 text-slate-600 sm:text-lg"
         >
           Bring social DMs, comments, likes, and live Instagram & Facebook insights into a single
           workspace. Prevent double-replies, keep a complete customer profile, and stay on top of
@@ -477,17 +490,28 @@ export function Hero() {
             minutes
           </p>
         </motion.div>
+        </div>
+
+        {embed ? null : (
+          <div className="hidden xl:flex xl:justify-end xl:pt-1">
+            <IPhoneShowcase reduce={reduce} />
+          </div>
+        )}
       </div>
 
-      <div className="relative z-20 mt-10 grid gap-4 sm:grid-cols-2 xl:pointer-events-none xl:absolute xl:inset-0 xl:z-10 xl:mt-0 xl:grid-cols-1 xl:gap-0">
-        <EngagementCard
-          reduce={reduce}
-          className="w-full max-w-sm justify-self-center sm:max-w-none xl:pointer-events-auto xl:absolute xl:left-0 xl:top-[15.5rem] xl:w-[252px] 2xl:-left-4 2xl:w-[272px]"
-        />
-        <CollisionCard
-          reduce={reduce}
-          className="w-full max-w-sm justify-self-center sm:max-w-none xl:pointer-events-auto xl:absolute xl:right-0 xl:top-[20.5rem] xl:w-[252px] 2xl:-right-4 2xl:top-[18rem] 2xl:w-[272px]"
-        />
+      {embed ? null : (
+        <div className="mx-auto mt-8 hidden max-w-3xl items-center justify-center gap-6 md:flex xl:hidden">
+          <div className="flex w-[220px] shrink-0 flex-col gap-2.5">
+            <EngagementCard reduce={reduce} stable />
+            <CollisionCard reduce={reduce} stable />
+          </div>
+          <IPhoneShowcase reduce={reduce} />
+        </div>
+      )}
+
+      <div className="relative z-20 mx-auto mt-6 flex max-w-sm flex-col gap-2.5 md:hidden">
+        <EngagementCard reduce={reduce} stable />
+        <CollisionCard reduce={reduce} stable />
       </div>
 
       <InboxPreview />

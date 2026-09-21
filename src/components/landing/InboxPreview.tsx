@@ -1,6 +1,7 @@
 import { AtSign, Bot, Heart, MessageCircle, Search, Send, Sparkles, Workflow, Zap } from "lucide-react";
 import { motion } from "motion/react";
 import { BrandIcon } from "@/components/landing/BrandIcon";
+import { cn } from "@/lib/utils";
 
 const threads = [
   {
@@ -61,9 +62,9 @@ function TypingDots() {
   );
 }
 
-export function InboxPreview() {
+export function InboxPreview({ className }: { className?: string }) {
   return (
-    <div className="relative mx-auto mt-16 max-w-6xl [perspective:1600px]">
+    <div className={cn("relative mx-auto mt-8 max-w-6xl [perspective:1600px] xl:mt-10", className)}>
       <motion.div
         initial={{ opacity: 0, y: 36, rotateX: 12 }}
         animate={{ opacity: 1, y: 0, rotateX: 2 }}
@@ -205,7 +206,7 @@ export function InboxPreview() {
         initial={{ opacity: 0, x: -16 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.8 }}
-        className="animate-floaty absolute -left-2 top-20 hidden max-w-xs items-start gap-2 rounded-2xl border border-white/80 bg-white/85 px-4 py-2.5 text-left text-xs font-medium text-slate-700 shadow-xl shadow-slate-900/5 backdrop-blur-xl md:flex"
+        className="animate-floaty absolute -left-2 top-20 hidden max-w-xs items-start gap-2 rounded-2xl border border-white/80 bg-white/85 px-4 py-2.5 text-left text-xs font-medium text-slate-700 shadow-xl shadow-slate-900/5 backdrop-blur-xl xl:flex"
       >
         <Zap className="mt-0.5 shrink-0 text-emerald-500" size={14} />
         WhatsApp: Automated price inquiry converted → Handed off to Sarah
@@ -214,7 +215,7 @@ export function InboxPreview() {
         initial={{ opacity: 0, x: 16 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 1 }}
-        className="animate-floaty absolute -right-3 bottom-24 hidden items-center gap-2 rounded-full border border-white/80 bg-white/85 px-4 py-2.5 text-xs font-medium text-slate-700 shadow-xl shadow-slate-900/5 backdrop-blur-xl [animation-delay:1.4s] md:flex"
+        className="animate-floaty absolute -right-3 bottom-24 hidden items-center gap-2 rounded-full border border-white/80 bg-white/85 px-4 py-2.5 text-xs font-medium text-slate-700 shadow-xl shadow-slate-900/5 backdrop-blur-xl [animation-delay:1.4s] xl:flex"
       >
         <Heart className="text-rose-500" size={14} fill="currentColor" />
         Auto-liked 14 comments
@@ -223,7 +224,7 @@ export function InboxPreview() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.15 }}
-        className="animate-floaty absolute right-16 top-10 hidden items-center gap-2 rounded-full border border-white/80 bg-white/85 px-4 py-2.5 text-xs font-medium text-slate-700 shadow-xl shadow-slate-900/5 backdrop-blur-xl [animation-delay:0.7s] lg:flex"
+        className="animate-floaty absolute right-16 top-10 hidden items-center gap-2 rounded-full border border-white/80 bg-white/85 px-4 py-2.5 text-xs font-medium text-slate-700 shadow-xl shadow-slate-900/5 backdrop-blur-xl [animation-delay:0.7s] xl:flex"
       >
         <span className="relative flex size-2">
           <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-70" />

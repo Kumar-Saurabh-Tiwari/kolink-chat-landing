@@ -353,6 +353,39 @@ html {
   animation: caret-blink 1s step-end infinite;
 }
 
+html[data-embed="1"] [data-iphone-frame] {
+  display: none !important;
+}
+
+@media (max-width: 767.98px) {
+  [data-iphone-frame] {
+    display: none !important;
+  }
+}
+
+html[data-embed="1"] main > section {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+html[data-embed="1"] main > section h2 {
+  font-size: 1.65rem;
+  line-height: 1.15;
+}
+
+html[data-embed="1"],
+html[data-embed="1"] body {
+  overscroll-behavior: none;
+  overflow-anchor: none;
+  scroll-behavior: auto;
+}
+
+[data-iphone-frame] {
+  overscroll-behavior: none;
+  overflow-anchor: none;
+  isolation: isolate;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

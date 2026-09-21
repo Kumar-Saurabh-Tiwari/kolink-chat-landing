@@ -93,10 +93,10 @@ function EngagementEngine() {
                 animate={{ opacity: 1, y: 0 }}
                 className="flex items-start justify-between gap-2 rounded-xl bg-slate-50 px-3 py-2"
               >
-                <p className="text-[11px] leading-5 text-slate-700">
+                <p className="min-w-0 text-[11px] leading-5 text-slate-700">
                   <b className="text-slate-900">@alex_growth</b> What&apos;s the discount code?
                 </p>
-                <span className="relative mt-0.5 shrink-0">
+                <span className="mt-0.5 flex shrink-0 flex-col items-end gap-1">
                   <Heart
                     size={14}
                     className={step >= 2 ? "text-rose-500" : "text-slate-300"}
@@ -104,11 +104,11 @@ function EngagementEngine() {
                   />
                   {step >= 2 ? (
                     <motion.span
-                      initial={{ scale: 0.6, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      className="absolute -right-16 -top-1 whitespace-nowrap rounded-full bg-rose-50 px-1.5 py-0.5 text-[8px] font-bold text-rose-600"
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="rounded-full bg-rose-50 px-1.5 py-0.5 text-[8px] font-bold leading-none text-rose-600"
                     >
-                      Auto-liked 0.4s
+                      Auto-liked
                     </motion.span>
                   ) : null}
                 </span>
@@ -476,7 +476,7 @@ function FlowCanvas() {
   ];
 
   return (
-    <div className="relative mt-5 flex min-h-[19.5rem] flex-1 flex-col overflow-hidden rounded-2xl border border-white/80 bg-white/55 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]">
+    <div className="relative mt-5 flex min-h-[16rem] flex-1 flex-col overflow-hidden rounded-2xl border border-white/80 bg-white/55 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] sm:min-h-[19.5rem]">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_0%,rgba(56,189,248,0.16),transparent_34%),radial-gradient(circle_at_88%_100%,rgba(52,211,153,0.14),transparent_36%),radial-gradient(circle_at_70%_0%,rgba(167,139,250,0.12),transparent_32%)]" />
       <div className="pointer-events-none absolute inset-0 opacity-[0.32] [background-image:radial-gradient(rgba(15,23,42,0.09)_0.7px,transparent_0.7px)] [background-size:14px_14px]" />
 
@@ -647,7 +647,7 @@ function FlowCanvas() {
 export function FeatureBento() {
   return (
     <section id="features" className="mx-auto max-w-6xl scroll-mt-28 px-5 py-16 sm:py-20">
-      <Reveal className="mb-12 max-w-2xl">
+      <Reveal className="mb-8 max-w-2xl sm:mb-12">
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-violet-600">
           One calm command center
         </p>
@@ -662,7 +662,7 @@ export function FeatureBento() {
 
       <Stagger className="grid auto-rows-fr gap-4 md:grid-cols-2">
         <StaggerItem className="h-full min-h-0">
-          <GlassCard className="h-full min-h-[34rem] p-6 sm:p-7">
+          <GlassCard id="feature-live" className="h-full min-h-0 scroll-mt-3 p-4 sm:min-h-[34rem] sm:p-7">
             <div className="mb-4 grid size-11 place-items-center rounded-2xl bg-rose-50 text-rose-600 ring-1 ring-rose-100">
               <Heart size={20} />
             </div>
@@ -676,7 +676,7 @@ export function FeatureBento() {
         </StaggerItem>
 
         <StaggerItem className="h-full min-h-0">
-          <GlassCard id="team" className="h-full min-h-[34rem] scroll-mt-28 p-6 sm:p-7">
+          <GlassCard id="team" className="h-full min-h-0 scroll-mt-28 p-4 sm:min-h-[34rem] sm:p-7">
             <div className="mb-4 grid size-11 place-items-center rounded-2xl bg-sky-50 text-sky-600 ring-1 ring-sky-100">
               <Users size={20} />
             </div>
@@ -689,7 +689,7 @@ export function FeatureBento() {
         </StaggerItem>
 
         <StaggerItem className="h-full min-h-0">
-          <GlassCard id="crm" className="h-full min-h-[34rem] scroll-mt-28 p-6 sm:p-7">
+          <GlassCard id="crm" className="h-full min-h-0 scroll-mt-28 p-4 sm:min-h-[34rem] sm:p-7">
             <div className="mb-4 grid size-11 place-items-center rounded-2xl bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100">
               <MessageCircle size={20} />
             </div>
@@ -703,7 +703,7 @@ export function FeatureBento() {
         </StaggerItem>
 
         <StaggerItem className="h-full min-h-0">
-          <GlassCard id="automations" className="h-full min-h-[34rem] p-6 sm:p-7">
+          <GlassCard id="automations" className="h-full min-h-0 p-4 sm:min-h-[34rem] sm:p-7">
             <div className="relative mb-4 grid size-11 place-items-center rounded-2xl bg-gradient-to-br from-violet-50 to-indigo-50 text-violet-600 ring-1 ring-violet-100">
               <span className="animate-breathe absolute inset-[-6px] rounded-2xl bg-violet-400/25 blur-md" />
               <motion.span
