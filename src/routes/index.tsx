@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, AtSign, Bot, Check, ChevronRight, CirclePlay, Instagram, Mail, Menu, MessageCircle, MousePointer2, Search, Send, Sparkles, Workflow, X, Zap } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useState, type HTMLAttributes, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -23,8 +23,8 @@ const channelsB = [
   ["SH", "Shopify", "Orders live", "bg-success/15 text-success"], ["WH", "Webhooks", "Zero latency", "bg-violet/15 text-violet"], ["DC", "Discord", "Community", "bg-violet/15 text-violet"], ["SL", "Slack", "Team alerts", "bg-coral/15 text-coral"], ["HS", "HubSpot", "CRM sync", "bg-coral/15 text-coral"], ["ZA", "Zapier", "4.8k apps", "bg-cyan/15 text-cyan"],
 ];
 
-function GlassCard({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={`glass-panel group relative overflow-hidden rounded-2xl ${className}`}><div className="pointer-events-none absolute -left-20 -top-20 size-48 rounded-full bg-cyan/5 blur-3xl transition-all duration-500 group-hover:bg-cyan/10" />{children}</div>;
+function GlassCard({ children, className = "", ...props }: { children: ReactNode } & HTMLAttributes<HTMLDivElement>) {
+  return <div className={`glass-panel group relative overflow-hidden rounded-2xl ${className}`} {...props}><div className="pointer-events-none absolute -left-20 -top-20 size-48 rounded-full bg-cyan/5 blur-3xl transition-all duration-500 group-hover:bg-cyan/10" />{children}</div>;
 }
 
 function ChannelRow({ items, reverse = false }: { items: string[][]; reverse?: boolean }) {
