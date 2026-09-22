@@ -73,29 +73,27 @@ function animateIframeScroll(
 
 function StatusGlyphs() {
   return (
-    <span className="flex items-center gap-[3px] text-slate-900">
+    <span className="flex items-end gap-[3px] text-slate-900">
       <svg viewBox="0 0 18 12" className="h-[8px] w-[13px]" aria-hidden>
         <rect x="0" y="7.2" width="3" height="4.8" rx="0.6" fill="currentColor" />
         <rect x="4.8" y="4.8" width="3" height="7.2" rx="0.6" fill="currentColor" />
         <rect x="9.6" y="2.4" width="3" height="9.6" rx="0.6" fill="currentColor" />
         <rect x="14.4" y="0" width="3" height="12" rx="0.6" fill="currentColor" opacity="0.28" />
       </svg>
-      <svg viewBox="0 0 16 12" className="h-[8px] w-[11px]" aria-hidden>
+      <svg viewBox="0 0 18 14" className="h-[11px] w-[14px]" aria-hidden>
         <path
-          d="M1.2 8.2a7.4 7.4 0 0 1 13.6 0"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
+          fill="currentColor"
+          d="M6.35 10.48A3.36 3.36 0 0 1 11.65 10.48A0.81 0.81 0 0 1 10.37 11.48A1.74 1.74 0 0 0 7.63 11.48A0.81 0.81 0 0 1 6.35 10.48Z"
         />
         <path
-          d="M3.6 9.6a4.4 4.4 0 0 1 8.8 0"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
+          fill="currentColor"
+          d="M4.46 9A5.76 5.76 0 0 1 13.54 9A0.81 0.81 0 0 1 12.26 10A4.14 4.14 0 0 0 5.74 10A0.81 0.81 0 0 1 4.46 9Z"
         />
-        <circle cx="8" cy="11.1" r="1" fill="currentColor" />
+        <path
+          fill="currentColor"
+          d="M2.57 7.53A8.16 8.16 0 0 1 15.43 7.53A0.81 0.81 0 0 1 14.15 8.52A6.54 6.54 0 0 0 3.85 8.52A0.81 0.81 0 0 1 2.57 7.53Z"
+        />
+        <circle cx="9" cy="12.55" r="1.08" fill="currentColor" />
       </svg>
       <svg viewBox="0 0 27 12" className="h-[8px] w-[16px]" aria-hidden>
         <rect
@@ -129,7 +127,8 @@ export function IPhoneShowcase({
   const screenH = VIEW_H * scale;
   const chromeTop = 30;
   const chromeBottom = 26;
-  const frameH = (screenH - chromeTop - chromeBottom) / scale;
+  const frameH = (screenH - chromeBottom) / scale;
+  const statusInset = chromeTop / scale;
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const shellRef = useRef<HTMLDivElement>(null);
   const pausedRef = useRef(reduceMotion);
@@ -138,6 +137,7 @@ export function IPhoneShowcase({
   const [loaded, setLoaded] = useState(false);
   const [clock, setClock] = useState("9:41");
   const [exploring, setExploring] = useState(false);
+  const [barClear, setBarClear] = useState(true);
   const [hostLabel, setHostLabel] = useState("koLink Chat");
 
   useEffect(() => {
@@ -222,6 +222,7 @@ export function IPhoneShowcase({
     let stopMotion = () => undefined;
     let step = 1;
     let innerWheel: ((event: WheelEvent) => void) | undefined;
+    let innerScroll: (() => void) | undefined;
 
     const markParentIntent = () => {
       holdParentRef.current = false;
@@ -250,7 +251,7 @@ export function IPhoneShowcase({
         if (selector !== "#top") {
           const node = doc.querySelector(selector);
           if (!node) return null;
-          target = node.getBoundingClientRect().top + iframeTop(win) - 12;
+          target = node.getBoundingClientRect().top + iframeTop(win) - statusInset - 8;
         }
         return { win, target: Math.min(max, Math.max(0, target)) };
       };
@@ -273,6 +274,14 @@ export function IPhoneShowcase({
       doc.documentElement.style.overscrollBehavior = "none";
       doc.documentElement.style.scrollBehavior = "auto";
       doc.body.style.overscrollBehavior = "none";
+
+      const onInnerScroll = () => {
+        const clear = iframeTop(win) <= 6;
+        setBarClear((current) => (current === clear ? current : clear));
+      };
+      onInnerScroll();
+      win.addEventListener("scroll", onInnerScroll, { passive: true });
+      innerScroll = onInnerScroll;
 
       innerWheel = (event: WheelEvent) => {
         bumpIdle();
@@ -342,6 +351,8 @@ export function IPhoneShowcase({
       window.removeEventListener("touchmove", onParentIntent, true);
       if (loadHandler) iframe.removeEventListener("load", loadHandler);
       const doc = iframe.contentDocument;
+      const win = iframe.contentWindow;
+      if (win && innerScroll) win.removeEventListener("scroll", innerScroll);
       if (doc) {
         doc.removeEventListener("pointerdown", bumpIdle);
         if (innerWheel) doc.removeEventListener("wheel", innerWheel);
@@ -392,7 +403,28 @@ export function IPhoneShowcase({
             className="relative overflow-hidden rounded-[1.85rem] bg-[#f8fafc] [overscroll-behavior:none]"
             style={{ width: screenW, height: screenH }}
           >
-            <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex h-[30px] items-center justify-between bg-[#f8fafc] px-3.5">
+            <div className="pointer-events-none absolute inset-x-0 top-0 z-20">
+              <div
+                className={cn(
+                  "absolute inset-x-0 top-0 h-[30px] bg-[#f8fafc] transition-opacity duration-300",
+                  barClear ? "opacity-100" : "opacity-0",
+                )}
+              />
+              <div
+                className={cn(
+                  "absolute inset-x-0 top-0 h-[52px] transition-opacity duration-300",
+                  barClear ? "opacity-0" : "opacity-100",
+                )}
+                style={{
+                  background:
+                    "linear-gradient(to bottom, rgba(248,250,252,0.5) 0%, rgba(248,250,252,0.5) 46%, rgba(248,250,252,0) 100%)",
+                  backdropFilter: "blur(8px)",
+                  WebkitBackdropFilter: "blur(8px)",
+                  maskImage: "linear-gradient(to bottom, #000 0%, #000 42%, transparent 100%)",
+                  WebkitMaskImage: "linear-gradient(to bottom, #000 0%, #000 42%, transparent 100%)",
+                }}
+              />
+              <div className="relative flex h-[30px] items-center justify-between px-3.5">
               <span className="relative z-10 text-[9px] font-semibold tracking-tight text-slate-900">
                 {clock}
               </span>
@@ -402,6 +434,7 @@ export function IPhoneShowcase({
               <span className="relative z-10">
                 <StatusGlyphs />
               </span>
+              </div>
             </div>
 
             {src ? (
@@ -411,7 +444,7 @@ export function IPhoneShowcase({
                 src={src}
                 className="absolute left-0 origin-top-left border-0 bg-[#f8fafc] [overscroll-behavior:none]"
                 style={{
-                  top: chromeTop,
+                  top: 0,
                   width: VIEW_W,
                   height: frameH,
                   transform: `scale(${scale})`,

@@ -380,6 +380,10 @@ html[data-embed="1"] body {
   scroll-behavior: auto;
 }
 
+html[data-embed="1"] body {
+  padding-top: 53px;
+}
+
 [data-iphone-frame] {
   overscroll-behavior: none;
   overflow-anchor: none;
