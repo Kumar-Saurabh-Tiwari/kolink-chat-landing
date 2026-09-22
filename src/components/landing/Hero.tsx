@@ -111,10 +111,12 @@ function TypingDots({ className }: { className?: string }) {
 function EngagementCard({
   reduce,
   stable = false,
+  singleLine = false,
   className,
 }: {
   reduce: boolean;
   stable?: boolean;
+  singleLine?: boolean;
   className?: string;
 }) {
   return (
@@ -140,7 +142,14 @@ function EngagementCard({
           </span>
           <div className="min-w-0 flex-1">
             <p className="text-[11px] font-semibold text-slate-900">Maya Chen</p>
-            <p className="mt-0.5 text-[10px] leading-4 text-slate-600">
+            <p
+              className={cn(
+                "mt-0.5 text-slate-600",
+                singleLine
+                  ? "whitespace-nowrap text-[9px] leading-none tracking-tight"
+                  : "text-[10px] leading-4",
+              )}
+            >
               “This drop is stunning — what’s the price on the creator bundle?”
             </p>
           </div>
@@ -194,10 +203,12 @@ function EngagementCard({
 function CollisionCard({
   reduce,
   stable = false,
+  singleLine = false,
   className,
 }: {
   reduce: boolean;
   stable?: boolean;
+  singleLine?: boolean;
   className?: string;
 }) {
   return (
@@ -224,7 +235,14 @@ function CollisionCard({
             <TypingDots className="mt-1" />
           </div>
         </div>
-        <p className="mt-2 rounded-lg bg-slate-50/80 px-2 py-1.5 text-[10px] leading-snug text-slate-500">
+        <p
+          className={cn(
+            "mt-2 rounded-lg bg-slate-50/80 py-1.5 text-slate-500",
+            singleLine
+              ? "whitespace-nowrap px-1 text-[8px] leading-none tracking-tight"
+              : "px-2 text-[10px] leading-snug",
+          )}
+        >
           Maya asked about Berlin shipping — keeping this thread calm and single-threaded.
         </p>
         <span className="relative mt-2 inline-flex">
@@ -324,7 +342,7 @@ function PrimaryCta({ reduce }: { reduce: boolean }) {
     >
       <Button
         variant="luminous"
-        className="relative isolate h-12 rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 px-7 text-[15px] shadow-blue-500/35 transition-shadow hover:scale-100 hover:shadow-blue-500/45 active:scale-100 [clip-path:inset(0_round_999px)] [transform:translateZ(0)]"
+        className="relative isolate h-11 whitespace-nowrap rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 px-3.5 text-[13px] shadow-blue-500/35 transition-shadow hover:scale-100 hover:shadow-blue-500/45 active:scale-100 [clip-path:inset(0_round_999px)] [transform:translateZ(0)] sm:h-12 sm:px-7 sm:text-[15px]"
         onClick={() =>
           document.querySelector("#workspace")?.scrollIntoView({ behavior: "smooth" })
         }
@@ -373,7 +391,10 @@ function TourCta({ reduce }: { reduce: boolean }) {
       <Button
         variant="glass"
         size="lg"
-        className={cn(frost, "h-12 px-7 text-[15px] text-slate-800 hover:translate-y-0")}
+        className={cn(
+          frost,
+          "h-11 whitespace-nowrap px-3.5 text-[13px] text-slate-800 hover:translate-y-0 sm:h-12 sm:px-7 sm:text-[15px]",
+        )}
         onClick={() => document.querySelector("#inbox")?.scrollIntoView({ behavior: "smooth" })}
       >
         <motion.span
@@ -473,7 +494,7 @@ export function Hero({ embed = false }: { embed?: boolean }) {
           initial={reduce ? false : { opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9, duration: 0.8, ease }}
-          className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"
+          className="mt-8 flex flex-row items-center justify-center gap-2 sm:gap-3"
         >
           <PrimaryCta reduce={reduce} />
           <TourCta reduce={reduce} />
@@ -530,8 +551,8 @@ export function Hero({ embed = false }: { embed?: boolean }) {
       )}
 
       <div className="relative z-20 mx-auto mt-6 flex max-w-sm flex-col gap-2.5 md:hidden">
-        <EngagementCard reduce={reduce} stable />
-        <CollisionCard reduce={reduce} stable />
+        <EngagementCard reduce={reduce} stable singleLine />
+        <CollisionCard reduce={reduce} stable singleLine />
       </div>
 
       <InboxPreview />
