@@ -1,10 +1,13 @@
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/landing/Logo";
 import { ShimmerButton } from "@/components/landing/ShimmerButton";
 import { cn } from "@/lib/utils";
+
+const drawerEase = [0.22, 1, 0.36, 1] as const;
 
 const links = [
   { label: "Features", href: "#features" },
@@ -13,6 +16,90 @@ const links = [
   { label: "Team CRM", href: "#team" },
   { label: "Pricing", href: "#pricing" },
 ];
+
+function MobileSidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const reduce = useReducedMotion();
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
+
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
+    <AnimatePresence>
+      {open ? (
+        <motion.button
+          key="nav-backdrop"
+          type="button"
+          aria-label="Close menu"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: reduce ? 0.01 : 0.35, ease: drawerEase }}
+          className="fixed inset-0 z-[70] bg-slate-950/25 backdrop-blur-[3px] lg:hidden"
+          onClick={onClose}
+        />
+      ) : null}
+      {open ? (
+        <motion.aside
+          key="nav-sidebar"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu"
+          initial={reduce ? { opacity: 0 } : { x: "100%" }}
+          animate={reduce ? { opacity: 1 } : { x: 0 }}
+          exit={reduce ? { opacity: 0 } : { x: "100%" }}
+          transition={{ duration: reduce ? 0.01 : 0.48, ease: drawerEase }}
+          className="fixed inset-y-3 right-3 z-[80] flex w-[min(86vw,22rem)] flex-col overflow-hidden rounded-[1.75rem] border border-white/80 bg-white/70 shadow-[0_24px_70px_-24px_rgba(15,23,42,0.45)] ring-1 ring-inset ring-white/90 backdrop-blur-2xl lg:hidden"
+        >
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(125,211,252,0.28),transparent_42%),radial-gradient(circle_at_100%_100%,rgba(167,139,250,0.18),transparent_40%)]" />
+          <div className="relative flex items-center justify-between gap-3 border-b border-white/70 px-4 py-3.5">
+            <Logo />
+            <Button
+              aria-label="Close menu"
+              variant="ghost"
+              size="icon"
+              className="rounded-full bg-white/70 ring-1 ring-white/80"
+              onClick={onClose}
+            >
+              <X />
+            </Button>
+          </div>
+          <nav className="relative flex flex-1 flex-col gap-1.5 overflow-y-auto px-3 py-3">
+            {links.map((link, index) => (
+              <motion.a
+                key={link.href}
+                href={link.href}
+                initial={reduce ? false : { opacity: 0, x: 18 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: reduce ? 0 : 0.08 + index * 0.05, duration: 0.4, ease: drawerEase }}
+                onClick={onClose}
+                className="rounded-2xl border border-white/70 bg-white/55 px-4 py-3 text-sm font-medium text-slate-700 shadow-sm backdrop-blur-xl transition-colors hover:bg-white/90 hover:text-slate-950"
+              >
+                {link.label}
+              </motion.a>
+            ))}
+          </nav>
+          <div className="relative grid gap-2 border-t border-white/70 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+            <Button variant="glass" className="h-11 justify-center rounded-2xl" onClick={onClose}>
+              Log In
+            </Button>
+            <ShimmerButton href="#workspace" className="h-11 w-full" onClick={onClose}>
+              Get Started
+            </ShimmerButton>
+          </div>
+        </motion.aside>
+      ) : null}
+    </AnimatePresence>,
+    document.body,
+  );
+}
 
 function NavLink({ href, label, onClick }: { href: string; label: string; onClick?: () => void }) {
   return (
@@ -45,7 +132,17 @@ export function Navbar({ compact = false }: { compact?: boolean }) {
     };
   }, [open]);
 
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const onChange = () => {
+      if (mq.matches) setOpen(false);
+    };
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
   return (
+    <>
     <header
       className={cn(
         compact
@@ -100,47 +197,8 @@ export function Navbar({ compact = false }: { compact?: boolean }) {
         </Button>
       </nav>
 
-      <AnimatePresence>
-        {open ? (
-          <motion.div
-            initial={{ opacity: 0, y: -28 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ type: "spring", stiffness: 320, damping: 28 }}
-            className="mx-auto mt-2 grid max-w-6xl gap-2 overflow-hidden rounded-3xl border border-white/90 bg-white/95 p-3 shadow-[0_10px_35px_-5px_rgba(15,23,42,0.08)] ring-1 ring-inset ring-white/90 backdrop-blur-2xl lg:hidden"
-          >
-            {links.map((link, index) => (
-              <motion.a
-                key={link.href}
-                href={link.href}
-                initial={{ opacity: 0, x: -14 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.06 * index, type: "spring", stiffness: 380, damping: 28 }}
-                onClick={() => setOpen(false)}
-                className="rounded-2xl border border-white/80 bg-white/70 px-4 py-3 text-sm font-medium text-slate-600 shadow-sm hover:bg-white hover:text-slate-900"
-              >
-                {link.label}
-              </motion.a>
-            ))}
-            <div className="mt-1 grid gap-2 border-t border-white/70 p-2">
-              <Button
-                variant="glass"
-                className="justify-center rounded-2xl"
-                onClick={() => setOpen(false)}
-              >
-                Log In
-              </Button>
-              <ShimmerButton
-                href="#workspace"
-                className="h-11 w-full"
-                onClick={() => setOpen(false)}
-              >
-                Get Started
-              </ShimmerButton>
-            </div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
     </header>
+    <MobileSidebar open={open} onClose={() => setOpen(false)} />
+    </>
   );
 }
