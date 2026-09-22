@@ -660,8 +660,8 @@ export function FeatureBento() {
         </p>
       </Reveal>
 
-      <Stagger className="grid auto-rows-fr gap-4 md:grid-cols-2">
-        <StaggerItem className="h-full min-h-0">
+      <Stagger className="grid min-w-0 auto-rows-fr gap-4 max-md:grid-cols-1 md:grid-cols-2">
+        <StaggerItem className="h-full min-h-0 min-w-0">
           <GlassCard id="feature-live" className="h-full min-h-0 scroll-mt-3 p-4 sm:min-h-[34rem] sm:p-7">
             <div className="mb-4 grid size-11 place-items-center rounded-2xl bg-rose-50 text-rose-600 ring-1 ring-rose-100">
               <Heart size={20} />
@@ -675,7 +675,7 @@ export function FeatureBento() {
           </GlassCard>
         </StaggerItem>
 
-        <StaggerItem className="h-full min-h-0">
+        <StaggerItem className="h-full min-h-0 min-w-0">
           <GlassCard id="team" className="h-full min-h-0 scroll-mt-28 p-4 sm:min-h-[34rem] sm:p-7">
             <div className="mb-4 grid size-11 place-items-center rounded-2xl bg-sky-50 text-sky-600 ring-1 ring-sky-100">
               <Users size={20} />
@@ -688,7 +688,7 @@ export function FeatureBento() {
           </GlassCard>
         </StaggerItem>
 
-        <StaggerItem className="h-full min-h-0">
+        <StaggerItem className="h-full min-h-0 min-w-0">
           <GlassCard id="crm" className="h-full min-h-0 scroll-mt-28 p-4 sm:min-h-[34rem] sm:p-7">
             <div className="mb-4 grid size-11 place-items-center rounded-2xl bg-indigo-50 text-indigo-600 ring-1 ring-indigo-100">
               <MessageCircle size={20} />
@@ -702,7 +702,7 @@ export function FeatureBento() {
           </GlassCard>
         </StaggerItem>
 
-        <StaggerItem className="h-full min-h-0">
+        <StaggerItem className="h-full min-h-0 min-w-0">
           <GlassCard id="automations" className="h-full min-h-0 p-4 sm:min-h-[34rem] sm:p-7">
             <div className="relative mb-4 grid size-11 place-items-center rounded-2xl bg-gradient-to-br from-violet-50 to-indigo-50 text-violet-600 ring-1 ring-violet-100">
               <span className="animate-breathe absolute inset-[-6px] rounded-2xl bg-violet-400/25 blur-md" />

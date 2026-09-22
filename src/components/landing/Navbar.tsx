@@ -50,7 +50,10 @@ export function Navbar({ compact = false }: { compact?: boolean }) {
       className={cn(
         compact
           ? "relative z-40 px-2 pb-1 pt-2"
-          : "fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:pt-5",
+          : "fixed inset-x-0 top-0 z-50 px-4 pt-3 sm:bg-transparent sm:pt-5",
+        !compact &&
+          scrolled &&
+          "bg-[#f8fafc]/95 pb-3 shadow-[0_12px_28px_-20px_rgba(15,23,42,0.55)] backdrop-blur-xl sm:pb-0 sm:shadow-none sm:backdrop-blur-none",
       )}
     >
       <nav
