@@ -8,6 +8,7 @@ import { FacebookMark, InstagramMark } from "@/components/landing/BrandMarks";
 import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
+const pop = [0.22, 1.2, 0.36, 1] as const;
 const frost =
   "bg-white/80 backdrop-blur-xl border border-white/90 shadow-lg ring-1 ring-inset ring-white/90";
 
@@ -420,6 +421,81 @@ function TourCta({ reduce }: { reduce: boolean }) {
   );
 }
 
+function loopPop(delay: number, reduce: boolean) {
+  if (reduce) return { duration: 0 };
+  return {
+    opacity: { delay, duration: 0.2, ease: "easeOut" as const },
+    scale: {
+      delay,
+      duration: 0.55,
+      times: [0, 0.38, 0.68, 1],
+      ease: "easeOut" as const,
+      repeat: Infinity,
+      repeatDelay: 1.7,
+    },
+  };
+}
+
+function TrustRow({ reduce }: { reduce: boolean }) {
+  return (
+    <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap sm:gap-x-5 sm:gap-y-2">
+      <div className="flex items-center">
+        {faces.map((face, index) => (
+          <motion.span
+            key={face.initials}
+            initial={reduce ? false : { opacity: 0, scale: 0.2 }}
+            animate={
+              reduce ? { opacity: 1, scale: 1 } : { opacity: 1, scale: [1, 1.34, 0.92, 1] }
+            }
+            transition={loopPop(0.35 + index * 0.1, reduce)}
+            className={cn(
+              "grid size-8 origin-center place-items-center rounded-full bg-gradient-to-br text-[10px] font-bold text-white ring-2 ring-white",
+              face.tone,
+              index > 0 && "-ml-2",
+            )}
+            style={{ zIndex: faces.length - index }}
+          >
+            {face.initials}
+          </motion.span>
+        ))}
+      </div>
+      <span className="inline-flex items-center gap-0.5 text-amber-400" aria-label="5 star rating">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <motion.span
+            key={index}
+            initial={reduce ? false : { opacity: 0, scale: 0.2 }}
+            animate={
+              reduce ? { opacity: 1, scale: 1 } : { opacity: 1, scale: [1, 1.6, 0.88, 1] }
+            }
+            transition={loopPop(0.9 + index * 0.1, reduce)}
+            className="grid origin-center place-items-center drop-shadow-[0_2px_6px_rgba(251,191,36,0.45)]"
+          >
+            <Star className="size-4 fill-current" />
+          </motion.span>
+        ))}
+      </span>
+      <p className="text-[11px] font-medium text-slate-500 sm:text-xs">
+        <motion.span
+          initial={reduce ? false : { opacity: 0, scale: 0.2 }}
+          animate={reduce ? { opacity: 1, scale: 1 } : { opacity: 1, scale: [1, 1.45, 0.9, 1] }}
+          transition={loopPop(1.45, reduce)}
+          className="mr-1 inline-block origin-center text-emerald-600"
+        >
+          ✓
+        </motion.span>
+        <motion.span
+          initial={reduce ? false : { opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: reduce ? 0 : 1.5, duration: reduce ? 0 : 0.4, ease }}
+          className="inline-block"
+        >
+          No credit card required • Set up in under 5 minutes
+        </motion.span>
+      </p>
+    </div>
+  );
+}
+
 export function Hero({ embed = false }: { embed?: boolean }) {
   const reduceMotion = useReducedMotion();
   const reduce = Boolean(reduceMotion);
@@ -500,37 +576,7 @@ export function Hero({ embed = false }: { embed?: boolean }) {
           <TourCta reduce={reduce} />
         </motion.div>
 
-        <motion.div
-          initial={reduce ? false : { opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.08, duration: 0.75, ease }}
-          className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap sm:gap-x-5 sm:gap-y-2"
-        >
-          <div className="flex items-center">
-            {faces.map((face, index) => (
-              <span
-                key={face.initials}
-                className={cn(
-                  "grid size-8 place-items-center rounded-full bg-gradient-to-br text-[10px] font-bold text-white ring-2 ring-white",
-                  face.tone,
-                  index > 0 && "-ml-2",
-                )}
-                style={{ zIndex: faces.length - index }}
-              >
-                {face.initials}
-              </span>
-            ))}
-          </div>
-          <span className="inline-flex items-center gap-0.5 text-amber-400" aria-label="5 star rating">
-            {Array.from({ length: 5 }).map((_, index) => (
-              <Star key={index} className="size-4 fill-current" />
-            ))}
-          </span>
-          <p className="text-[11px] font-medium text-slate-500 sm:text-xs">
-            <span className="text-emerald-600">✓</span> No credit card required • Set up in under 5
-            minutes
-          </p>
-        </motion.div>
+        <TrustRow reduce={reduce} />
         </div>
 
         {embed ? null : (

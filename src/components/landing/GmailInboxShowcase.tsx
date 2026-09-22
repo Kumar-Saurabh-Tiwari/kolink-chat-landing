@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
-import { Archive, ArrowLeft, Check, Clock, Moon, Send, Tag, UserPlus } from "lucide-react";
+import { Archive, Check, Clock, Moon, Send, Tag, UserPlus } from "lucide-react";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { GmailMark, InstagramMark, WhatsAppMark, XMark } from "@/components/landing/BrandMarks";
 import { Reveal } from "@/components/landing/Reveal";
@@ -164,7 +164,6 @@ export function GmailInboxShowcase() {
   const [filter, setFilter] = useState<(typeof FILTERS)[number]["id"]>("all");
   const [threads, setThreads] = useState(SEED);
   const [selectedId, setSelectedId] = useState("maya");
-  const [mobilePane, setMobilePane] = useState<"list" | "thread">("list");
   const [via, setVia] = useState<"gmail" | "whatsapp">("gmail");
   const [draft, setDraft] = useState("");
   const [sent, setSent] = useState<Record<string, string[]>>({});
@@ -208,7 +207,6 @@ export function GmailInboxShowcase() {
 
   function selectThread(id: string) {
     setSelectedId(id);
-    setMobilePane("thread");
     setThreads((current) =>
       current.map((thread) => (thread.id === id ? { ...thread, unread: false } : thread)),
     );
@@ -239,14 +237,14 @@ export function GmailInboxShowcase() {
       </Reveal>
 
       <div className="glass-panel relative overflow-hidden rounded-3xl ring-1 ring-inset ring-white/95">
-        <div className="flex flex-wrap gap-2 border-b border-white/80 bg-white/50 px-3 py-3 sm:px-4">
+        <div className="flex gap-2 overflow-x-auto border-b border-white/80 bg-white/50 px-3 py-3 max-md:flex-nowrap sm:px-4 md:flex-wrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {FILTERS.map((item) => (
             <button
               key={item.id}
               type="button"
               onClick={() => setFilter(item.id)}
               className={cn(
-                "rounded-full px-3 py-1.5 text-[11px] font-semibold transition transform-gpu",
+                "shrink-0 rounded-full px-3 py-1.5 text-[11px] font-semibold transition transform-gpu",
                 filter === item.id
                   ? "bg-slate-900 text-white shadow-sm"
                   : "bg-white/70 text-slate-600 ring-1 ring-slate-200/80 hover:bg-white",
@@ -258,13 +256,8 @@ export function GmailInboxShowcase() {
           ))}
         </div>
 
-        <div className="grid min-h-[520px] md:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
-          <div
-            className={cn(
-              "border-r border-white/80 bg-white/40",
-              mobilePane === "thread" && "hidden md:block",
-            )}
-          >
+        <div className="grid max-md:h-[26.5rem] max-md:grid-cols-[5.35rem_minmax(0,1fr)] md:min-h-[520px] md:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
+          <div className="border-r border-white/80 bg-white/40 max-md:min-h-0 max-md:overflow-y-auto">
             <AnimatePresence initial={false}>
               {visible.map((thread, index) => {
                 const Icon = CHANNEL_ICON[thread.channel];
@@ -279,31 +272,37 @@ export function GmailInboxShowcase() {
                     transition={{ delay: isNew ? 0 : index * 0.03 }}
                     onClick={() => selectThread(thread.id)}
                     className={cn(
-                      "flex w-full gap-3 border-b border-slate-200/60 px-4 py-3 text-left transition hover:bg-white/80",
+                      "flex w-full border-b border-slate-200/60 text-left transition hover:bg-white/80",
+                      "gap-3 px-4 py-3",
+                      "max-md:flex-col max-md:items-center max-md:gap-1 max-md:px-1.5 max-md:py-2.5",
                       selected?.id === thread.id && "bg-blue-50/80",
                     )}
                   >
                     <div
-                      className={`grid size-10 shrink-0 place-items-center rounded-full bg-gradient-to-br text-[11px] font-bold text-white ${thread.color}`}
+                      className={`grid size-10 shrink-0 place-items-center rounded-full bg-gradient-to-br text-[11px] font-bold text-white max-md:size-8 max-md:text-[9px] ${thread.color}`}
                     >
                       {thread.initials}
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2">
-                        <p className="truncate text-[13px] font-semibold text-slate-900">
+                    <div className="min-w-0 flex-1 max-md:w-full">
+                      <div className="flex items-center gap-2 max-md:justify-center">
+                        <p className="truncate text-[13px] font-semibold text-slate-900 max-md:min-w-0 max-md:flex-1 max-md:text-center max-md:text-[9px]">
                           {thread.name}
                         </p>
                         {thread.unread ? (
-                          <span className="size-2 shrink-0 rounded-full bg-blue-600" />
+                          <span className="size-2 shrink-0 rounded-full bg-blue-600 max-md:size-1.5" />
                         ) : null}
-                        <span className="ml-auto text-[10px] text-slate-400">{thread.time}</span>
+                        <span className="ml-auto text-[10px] text-slate-400 max-md:hidden">
+                          {thread.time}
+                        </span>
                       </div>
-                      <p className="truncate text-[12px] font-medium text-slate-700">
+                      <p className="truncate text-[12px] font-medium text-slate-700 max-md:hidden">
                         {thread.subject}
                       </p>
-                      <p className="truncate text-[11px] text-slate-500">{thread.preview}</p>
+                      <p className="truncate text-[11px] text-slate-500 max-md:hidden">
+                        {thread.preview}
+                      </p>
                     </div>
-                    <span className="mt-1 shrink-0">
+                    <span className="mt-1 shrink-0 max-md:hidden">
                       <Icon className="size-5" />
                     </span>
                   </motion.button>
@@ -312,49 +311,39 @@ export function GmailInboxShowcase() {
             </AnimatePresence>
           </div>
 
-          <div
-            className={cn(
-              "flex min-w-0 flex-col bg-white/55",
-              mobilePane === "list" && "hidden md:flex",
-            )}
-          >
+          <div className="flex min-w-0 flex-col bg-white/55 max-md:min-h-0 max-md:overflow-hidden">
             {selected ? (
               <>
-                <div className="flex items-center gap-3 border-b border-white/80 px-4 py-3">
-                  <button
-                    type="button"
-                    className="grid size-8 place-items-center rounded-full bg-white md:hidden"
-                    onClick={() => setMobilePane("list")}
-                    aria-label="Back to threads"
-                  >
-                    <ArrowLeft size={16} />
-                  </button>
+                <div className="flex items-center gap-2 border-b border-white/80 px-2.5 py-2 md:gap-3 md:px-4 md:py-3">
                   <div
-                    className={`grid size-9 place-items-center rounded-full bg-gradient-to-br text-[11px] font-bold text-white ${selected.color}`}
+                    className={`grid size-8 shrink-0 place-items-center rounded-full bg-gradient-to-br text-[10px] font-bold text-white md:size-9 md:text-[11px] ${selected.color}`}
                   >
                     {selected.initials}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-semibold text-slate-900">{selected.name}</p>
-                    <p className="text-[11px] text-slate-500">
+                    <p className="truncate text-[13px] font-semibold text-slate-900 md:text-sm">
+                      {selected.name}
+                    </p>
+                    <p className="truncate text-[10px] text-slate-500 md:text-[11px]">
                       {CHANNEL_LABEL[selected.channel]} · {selected.subject}
                     </p>
                   </div>
-                  <span className="hidden rounded-full bg-sky-50 px-2.5 py-1 text-[10px] font-bold text-sky-700 sm:inline">
+                  <span className="hidden shrink-0 rounded-full bg-sky-50 px-2.5 py-1 text-[10px] font-bold text-sky-700 sm:inline">
                     {CHANNEL_LABEL[selected.channel]}
                   </span>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold text-amber-700">
-                    <Clock size={11} />
-                    Reply within {formatSla(sla)}
+                  <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-amber-50 px-1.5 py-1 text-[9px] font-bold text-amber-700 md:px-2.5 md:text-[10px]">
+                    <Clock size={11} className="max-md:size-2.5" />
+                    <span className="max-md:sr-only">Reply within </span>
+                    {formatSla(sla)}
                   </span>
                 </div>
 
-                <div className="flex-1 space-y-3 overflow-auto p-4 sm:p-5">
+                <div className="flex-1 space-y-2 overflow-auto p-2.5 max-md:min-h-0 md:space-y-3 md:p-5">
                   {history.map((message) => (
                     <div
                       key={`${message.time}-${message.text}`}
                       className={cn(
-                        "max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-5 shadow-sm",
+                        "max-w-[92%] rounded-2xl px-2.5 py-2 text-[12px] leading-4 shadow-sm md:max-w-[85%] md:px-3.5 md:py-2.5 md:text-sm md:leading-5",
                         message.from === "us"
                           ? "ml-auto rounded-tr-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white"
                           : "rounded-tl-sm bg-white text-slate-700 ring-1 ring-slate-100",
@@ -373,7 +362,7 @@ export function GmailInboxShowcase() {
                   ))}
                   {selected.channel === "instagram" ? (
                     <div className="max-w-[70%] overflow-hidden rounded-2xl ring-1 ring-slate-100">
-                      <div className="h-24 bg-gradient-to-br from-fuchsia-500 via-rose-400 to-amber-300" />
+                      <div className="h-12 bg-gradient-to-br from-fuchsia-500 via-rose-400 to-amber-300 md:h-24" />
                       <p className="bg-white px-3 py-2 text-[11px] text-slate-500">
                         Reel preview · Creator Kit drop
                       </p>
@@ -382,7 +371,7 @@ export function GmailInboxShowcase() {
                   {extras.map((text) => (
                     <div
                       key={text}
-                      className="ml-auto max-w-[85%] rounded-2xl rounded-tr-sm bg-gradient-to-r from-blue-600 to-indigo-600 px-3.5 py-2.5 text-sm text-white shadow-sm"
+                      className="ml-auto max-w-[92%] rounded-2xl rounded-tr-sm bg-gradient-to-r from-blue-600 to-indigo-600 px-2.5 py-2 text-[12px] text-white shadow-sm md:max-w-[85%] md:px-3.5 md:py-2.5 md:text-sm"
                     >
                       {text}
                       <span className="mt-1 block text-[10px] text-blue-100">
@@ -392,14 +381,14 @@ export function GmailInboxShowcase() {
                   ))}
                 </div>
 
-                <div className="border-t border-white/80 bg-white/70 p-3 sm:p-4">
-                  <div className="mb-2 flex flex-wrap gap-2">
+                <div className="shrink-0 border-t border-white/80 bg-white/70 p-2 md:p-4">
+                  <div className="mb-2 flex gap-2 overflow-x-auto max-md:flex-nowrap md:flex-wrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                     {CANNED.map((item) => (
                       <button
                         key={item.id}
                         type="button"
                         onClick={() => setDraft(item.text)}
-                        className="rounded-full bg-slate-900 px-3 py-1 font-mono text-[10px] font-semibold text-white hover:bg-slate-800"
+                        className="shrink-0 rounded-full bg-slate-900 px-3 py-1 font-mono text-[10px] font-semibold text-white hover:bg-slate-800"
                       >
                         {item.chip}
                       </button>
@@ -418,7 +407,7 @@ export function GmailInboxShowcase() {
                         }}
                         rows={2}
                         placeholder="Write a reply…"
-                        className="w-full resize-none bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400"
+                        className="h-8 w-full resize-none bg-transparent text-[13px] text-slate-800 outline-none placeholder:text-slate-400 md:h-auto md:text-sm"
                       />
                       <span className="animate-caret inline-block h-4 w-px bg-blue-600 align-middle" />
                     </div>
@@ -431,11 +420,11 @@ export function GmailInboxShowcase() {
                       <Send size={14} />
                     </button>
                   </div>
-                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                  <div className="mt-2 flex items-center gap-1.5 overflow-x-auto md:mt-3 md:flex-wrap md:gap-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                     <button
                       type="button"
                       onClick={() => setVia((value) => (value === "gmail" ? "whatsapp" : "gmail"))}
-                      className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-semibold text-slate-700"
+                      className="inline-flex shrink-0 items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-semibold text-slate-700"
                     >
                       <span
                         className={cn(
@@ -466,7 +455,7 @@ export function GmailInboxShowcase() {
                         type="button"
                         title={action.label}
                         onClick={() => setToast(action.toast)}
-                        className="inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1.5 text-[11px] font-semibold text-slate-600 ring-1 ring-slate-200 hover:bg-slate-50"
+                        className="inline-flex shrink-0 items-center gap-1 rounded-full bg-white px-2.5 py-1.5 text-[11px] font-semibold text-slate-600 ring-1 ring-slate-200 hover:bg-slate-50"
                       >
                         <action.icon size={12} />
                         <span className="hidden sm:inline">{action.label}</span>
