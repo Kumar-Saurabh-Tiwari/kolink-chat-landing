@@ -187,7 +187,8 @@ export function InfiniteCarousel() {
           Your customers already live here.
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-slate-600 sm:text-base">
-          Instagram through Gmail — comments, likes, DMs, and threads in a single luminous inbox.
+          Instagram through Gmail — publish a post, then keep comments, DMs, and AI replies in one
+          luminous inbox.
         </p>
       </Reveal>
       <div className="space-y-3 overflow-x-hidden">

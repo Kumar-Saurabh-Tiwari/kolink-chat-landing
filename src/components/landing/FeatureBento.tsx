@@ -438,7 +438,7 @@ function FlowCanvas() {
   const logs = [
     { tone: "text-sky-700", text: "Trigger matched “Price” on Instagram" },
     { tone: "text-violet-700", text: "Logic passed · follower = true" },
-    { tone: "text-emerald-700", text: "Action delivered · like + WhatsApp + CRM" },
+    { tone: "text-emerald-700", text: "AI response sent · like + WhatsApp + CRM" },
   ] as const;
   const activeLog = logs[step] ?? logs[0];
 
@@ -462,7 +462,7 @@ function FlowCanvas() {
     {
       id: 2,
       label: "Action",
-      body: "Like + coupon + CRM",
+      body: "AI reply + coupon",
       icon: Sparkles,
       iconWrap: "from-emerald-400 to-teal-600 shadow-emerald-500/35",
       ring: "border-emerald-200/90 shadow-[0_12px_28px_-14px_rgba(16,185,129,0.5)]",
@@ -471,7 +471,7 @@ function FlowCanvas() {
 
   const results = [
     { label: "Comment auto-liked" },
-    { label: "WhatsApp coupon sent" },
+    { label: "AI response sent" },
     { label: "CRM · High intent" },
   ];
 
@@ -652,11 +652,12 @@ export function FeatureBento() {
           One calm command center
         </p>
         <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
-          Engage, assign, remember, automate.
+          Post, engage, remember, automate.
         </h2>
         <p className="mt-4 text-sm leading-6 text-slate-600 sm:text-base">
-          Likes and comments that compound reach, a team that never double-replies, a mini-CRM that
-          stitches identities, and flows your whole company can read.
+          Publish a new post from the same workspace, then let AI answer the replies. Likes and
+          comments that compound reach, a team that never double-replies, and automations your
+          whole company can read.
         </p>
       </Reveal>
 
@@ -714,10 +715,10 @@ export function FeatureBento() {
                 <Workflow size={20} />
               </motion.span>
             </div>
-            <h3 className="text-xl font-bold text-slate-900">Readable Visual Flow Builder</h3>
+            <h3 className="text-xl font-bold text-slate-900">Automations with AI responses</h3>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
-              When a comment contains “Price” → follower check → auto-like + WhatsApp coupon. Pulses
-              travel the connectors so the path is obvious.
+              Publish the post, then draw the path. When a comment contains “Price,” AI replies,
+              checks the follower, auto-likes, and sends a WhatsApp coupon.
             </p>
             <FlowCanvas />
           </GlassCard>

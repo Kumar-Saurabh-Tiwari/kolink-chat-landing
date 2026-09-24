@@ -13,9 +13,9 @@ const plans = [
     cadence: "forever",
     blurb: "Prove the inbox before you connect a single account.",
     features: [
+      "Publish new posts",
+      "AI response automations",
       "Two social channels",
-      "1 workspace",
-      "Comment-to-DM automations",
       "7-day conversation history",
       "Community support",
     ],
@@ -30,9 +30,9 @@ const plans = [
     blurb: "The command center for teams that live in customer conversations.",
     features: [
       "Every channel included",
-      "Likes & comments engine",
+      "Publish new posts",
+      "AI response automations",
       "Collision lock + team CRM",
-      "Visual automations",
       "Priority support",
     ],
     cta: "Get started",
@@ -47,7 +47,7 @@ const plans = [
     features: [
       "Everything in Growth",
       "Dedicated success partner",
-      "Custom channel automations",
+      "Custom AI automations",
       "SSO & team sign-on",
       "99.99% uptime guarantee",
     ],

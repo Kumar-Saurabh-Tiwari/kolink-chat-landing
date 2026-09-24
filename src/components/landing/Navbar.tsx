@@ -11,6 +11,7 @@ const drawerEase = [0.22, 1, 0.36, 1] as const;
 
 const links = [
   { label: "Features", href: "#features" },
+  { label: "Posting", href: "#posting" },
   { label: "Inbox Simulator", href: "#inbox" },
   { label: "Channels", href: "#channels" },
   { label: "Team CRM", href: "#team" },

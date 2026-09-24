@@ -8,6 +8,7 @@ import { GmailInboxShowcase } from "@/components/landing/GmailInboxShowcase";
 import { Hero } from "@/components/landing/Hero";
 import { InfiniteCarousel } from "@/components/landing/InfiniteCarousel";
 import { Navbar } from "@/components/landing/Navbar";
+import { PostStudio } from "@/components/landing/PostStudio";
 import { Pricing } from "@/components/landing/Pricing";
 import { cn } from "@/lib/utils";
 
@@ -26,7 +27,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Bring social DMs, comments, likes, and Instagram & Facebook insights into one workspace — across every channel.",
+          "Publish new posts, answer with AI automations, and bring every social DM, comment, and insight into one workspace.",
       },
       {
         property: "og:title",
@@ -35,7 +36,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "One luminous inbox for every channel — Instagram, Facebook, Messenger, WhatsApp, and more.",
+          "Publish posts and let AI reply — one inbox for Instagram, Facebook, Messenger, WhatsApp, and more.",
       },
       { property: "og:type", content: "website" },
       { property: "og:image", content: "/apple-touch-icon.png" },
@@ -71,6 +72,7 @@ function Index() {
         <InfiniteCarousel />
         <GmailInboxShowcase />
         <FeatureBento />
+        <PostStudio />
         <Pricing />
         <CTASection />
       </main>

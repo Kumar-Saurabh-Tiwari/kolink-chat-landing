@@ -23,6 +23,7 @@ const columns = [
     title: "Product",
     links: [
       { href: "#features", label: "Features" },
+      { href: "#posting", label: "Posting" },
       { href: "#inbox", label: "Inbox" },
       { href: "#channels", label: "Channels" },
       { href: "#pricing", label: "Pricing" },
@@ -75,8 +76,8 @@ export function Footer() {
               One calm workspace for every channel.
             </p>
             <p className="mt-2 text-sm leading-6 text-slate-500">
-              Unify social DMs, comments, and performance insights so marketing and support stay in
-              the same conversation.
+              Publish new posts, answer with AI, and keep social DMs, comments, and insights in the
+              same conversation.
             </p>
             <div className="mt-6 flex flex-col gap-2.5 sm:flex-row sm:items-center">
               <ShimmerButton href="#workspace" className="h-11 w-full px-5 sm:w-auto">

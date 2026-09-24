@@ -78,7 +78,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "koLink Chat" },
-      { name: "description", content: "One workspace for every customer conversation." },
+      { name: "description", content: "Publish new posts, answer with AI automations, and keep every conversation in one workspace." },
       { name: "author", content: "koLink Chat" },
       { name: "theme-color", content: "#f8fafc" },
       { property: "og:type", content: "website" },

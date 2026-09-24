@@ -516,7 +516,7 @@ export function Hero({ embed = false }: { embed?: boolean }) {
           </div>
         )}
 
-        <div className={cn("mx-auto max-w-2xl text-center xl:max-w-[40rem] xl:pt-2", embed && "xl:col-span-3")}>
+        <div className={cn("mx-auto w-full max-w-3xl text-center xl:max-w-none xl:pt-2", embed && "xl:col-span-3")}>
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -528,7 +528,7 @@ export function Hero({ embed = false }: { embed?: boolean }) {
         >
           <RadarDot reduce={reduce} />
           <span className="truncate font-semibold text-slate-800">
-            Social inbox & engagement, unified
+            Publish posts, reply with AI, one inbox
           </span>
         </motion.div>
 
@@ -559,11 +559,13 @@ export function Hero({ embed = false }: { embed?: boolean }) {
           initial={reduce ? false : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.72, duration: 0.85, ease }}
-          className="mx-auto mt-6 max-w-xl text-base leading-7 text-slate-600 sm:text-lg"
+          className="mx-auto mt-5 max-w-2xl text-lg font-medium leading-8 tracking-[-0.011em] text-slate-800 sm:text-xl sm:leading-9 xl:max-w-none"
         >
-          Bring social DMs, comments, likes, and live Instagram & Facebook insights into a single
-          workspace. Prevent double-replies, keep a complete customer profile, and stay on top of
-          every channel — without hopping between tabs.
+          Publish from one workspace.
+          <span className="mt-1 block">AI responds to comments and direct messages.</span>
+          <span className="mt-2 block text-base font-normal leading-7 tracking-normal text-slate-500 sm:text-[17px]">
+            Likes, insights, and every customer profile stay together across every channel.
+          </span>
         </motion.p>
 
         <motion.div

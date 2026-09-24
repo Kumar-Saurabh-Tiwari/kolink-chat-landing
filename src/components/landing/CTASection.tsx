@@ -122,8 +122,8 @@ export function CTASection() {
                 <span className="mt-1 block text-blue-100/95">Connect your accounts in seconds.</span>
               </h2>
               <p className="mt-4 max-w-xl text-sm leading-7 text-blue-50/90 sm:text-base">
-                Experience zero tab clutter. Test the live inbox, automations, and team assignments
-                before you connect a single account.
+                Experience zero tab clutter. Publish a post, try AI response automations, and test
+                the live inbox before you connect a single account.
               </p>
 
               {submitted ? (
