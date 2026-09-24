@@ -127,7 +127,7 @@ export function IPhoneShowcase({
   const screenH = VIEW_H * scale;
   const chromeTop = 30;
   const chromeBottom = 26;
-  const frameH = (screenH - chromeBottom) / scale;
+  const frameH = screenH / scale;
   const statusInset = chromeTop / scale;
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const shellRef = useRef<HTMLDivElement>(null);
@@ -464,12 +464,34 @@ export function IPhoneShowcase({
               </div>
             ) : null}
 
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex h-[26px] items-center justify-center bg-[#f8fafc]">
-              <div className="flex h-[14px] max-w-[70%] items-center gap-1 rounded-full bg-white px-2 shadow-sm ring-1 ring-slate-200/80">
-                <span className="size-1 shrink-0 rounded-full bg-emerald-500" />
-                <span className="truncate text-[7px] font-semibold tracking-tight text-slate-500">
-                  {hostLabel}
-                </span>
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20">
+              <div
+                className={cn(
+                  "absolute inset-x-0 bottom-0 h-[26px] bg-[#f8fafc] transition-opacity duration-300",
+                  barClear ? "opacity-100" : "opacity-0",
+                )}
+              />
+              <div
+                className={cn(
+                  "absolute inset-x-0 bottom-0 h-[48px] transition-opacity duration-300",
+                  barClear ? "opacity-0" : "opacity-100",
+                )}
+                style={{
+                  background:
+                    "linear-gradient(to top, rgba(248,250,252,0.5) 0%, rgba(248,250,252,0.5) 46%, rgba(248,250,252,0) 100%)",
+                  backdropFilter: "blur(8px)",
+                  WebkitBackdropFilter: "blur(8px)",
+                  maskImage: "linear-gradient(to top, #000 0%, #000 42%, transparent 100%)",
+                  WebkitMaskImage: "linear-gradient(to top, #000 0%, #000 42%, transparent 100%)",
+                }}
+              />
+              <div className="relative flex h-[26px] items-center justify-center">
+                <div className="flex h-[14px] max-w-[70%] items-center gap-1 rounded-full bg-white px-2 shadow-sm ring-1 ring-slate-200/80">
+                  <span className="size-1 shrink-0 rounded-full bg-emerald-500" />
+                  <span className="truncate text-[7px] font-semibold tracking-tight text-slate-500">
+                    {hostLabel}
+                  </span>
+                </div>
               </div>
             </div>
           </div>

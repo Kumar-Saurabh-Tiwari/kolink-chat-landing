@@ -189,10 +189,11 @@ function EngagementCard({
           </p>
           <div className="mt-1 h-1 overflow-hidden rounded-full bg-emerald-100">
             <motion.span
-              className="block h-full rounded-full bg-gradient-to-r from-emerald-400 to-sky-500"
-              initial={{ width: "18%" }}
-              animate={{ width: "42%" }}
-              transition={{ duration: 1.4, delay: 0.4, ease }}
+              className="block h-full origin-left rounded-full bg-gradient-to-r from-emerald-400 to-sky-500"
+              style={{ width: "42%" }}
+              initial={reduce ? false : { scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 1.7, delay: stable ? 0.45 : 1.05, ease }}
             />
           </div>
         </div>
@@ -266,12 +267,13 @@ function CollisionCard({
               Sentiment
             </span>
           </div>
-          <div className="mt-1 h-1 overflow-hidden rounded-full bg-slate-100">
+          <div className="mt-1 h-1 overflow-hidden rounded-full bg-emerald-100">
             <motion.span
-              className="block h-full rounded-full bg-gradient-to-r from-emerald-400 to-teal-500"
-              initial={{ width: "22%" }}
-              animate={{ width: "98%" }}
-              transition={{ duration: 1.5, delay: 0.55, ease }}
+              className="block h-full origin-left rounded-full bg-gradient-to-r from-emerald-400 to-teal-500"
+              style={{ width: "98%" }}
+              initial={reduce ? false : { scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 1.7, delay: stable ? 0.6 : 1.2, ease }}
             />
           </div>
         </div>

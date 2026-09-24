@@ -382,6 +382,7 @@ html[data-embed="1"] body {
 
 html[data-embed="1"] body {
   padding-top: 53px;
+  padding-bottom: 46px;
 }
 
 [data-iphone-frame] {
