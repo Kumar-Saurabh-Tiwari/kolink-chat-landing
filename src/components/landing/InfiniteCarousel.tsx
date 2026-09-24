@@ -110,6 +110,63 @@ const channels: Channel[] = [
   },
 ];
 
+const scenes: Record<Channel["key"], { still: string; scene: string; reply: string }> = {
+  instagram: {
+    still: "/channels/instagram.png",
+    scene: "Phone open on an Instagram Reel",
+    reply: "Alex comments: What’s the price?",
+  },
+  facebook: {
+    still: "/channels/facebook.png",
+    scene: "Phone open on a Facebook post",
+    reply: "Jon asks: Can we ship to Berlin?",
+  },
+  messenger: {
+    still: "/channels/messenger.png",
+    scene: "Phone open in Messenger",
+    reply: "Maya asks for the VIP link",
+  },
+  whatsapp: {
+    still: "/channels/whatsapp.png",
+    scene: "Phone open in WhatsApp",
+    reply: "Priya orders for Thursday",
+  },
+  threads: {
+    still: "/channels/threads.png",
+    scene: "Phone open on a Threads post",
+    reply: "Noah replies: Loved this drop",
+  },
+  x: {
+    still: "/channels/x.png",
+    scene: "Phone open on X",
+    reply: "Elena sends a direct message",
+  },
+  linkedin: {
+    still: "/channels/linkedin.png",
+    scene: "Laptop open on LinkedIn",
+    reply: "Jon asks for pricing",
+  },
+  gmail: {
+    still: "/channels/gmail.png",
+    scene: "Laptop open in koLink Chat",
+    reply: "Amelia’s contract thread is open",
+  },
+};
+
+function ChannelPreview({ id }: { id: Channel["key"] }) {
+  const scene = scenes[id];
+
+  return (
+    <div className="relative h-full overflow-hidden bg-slate-200">
+      <img src={scene.still} alt="" className="absolute inset-0 h-full w-full object-cover object-center" />
+      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/85 via-slate-950/45 to-transparent px-2.5 pb-2 pt-8">
+        <p className="text-[10px] font-semibold leading-4 text-white">{scene.scene}</p>
+        <p className="truncate text-[10px] font-medium leading-4 text-white/80">{scene.reply}</p>
+      </div>
+    </div>
+  );
+}
+
 function ChannelCard({ channel }: { channel: Channel }) {
   const Icon = brandMarks[channel.key];
   const [tick, setTick] = useState(0);
@@ -127,33 +184,39 @@ function ChannelCard({ channel }: { channel: Channel }) {
       whileHover={{ scale: 1.03, y: -2 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className={cn(
-        "group relative w-[min(86vw,22.5rem)] shrink-0 overflow-hidden rounded-2xl border border-white/90 bg-white/75 px-5 py-4 shadow-md backdrop-blur-xl transform-gpu will-change-transform",
+        "group relative flex h-[16.75rem] w-[min(86vw,22.5rem)] shrink-0 flex-col overflow-hidden rounded-2xl border border-white/90 bg-white/75 px-4 py-3.5 shadow-md backdrop-blur-xl",
         "shadow-[inset_0_1px_1px_1px_rgba(255,255,255,0.95),0_12px_32px_-12px_rgba(15,23,42,0.08)]",
         channel.glow,
       )}
     >
       <div className={cn("pointer-events-none absolute -left-6 -top-8 size-24 rounded-full blur-2xl", channel.halo)} />
-      <div className="relative flex items-start gap-3">
-        <span className="relative grid size-12 shrink-0 place-items-center rounded-2xl bg-white shadow-sm ring-1 ring-white">
-          <span className={cn("pointer-events-none absolute inset-0 rounded-2xl opacity-90", channel.halo)} />
-          <Icon className="relative size-7" />
-        </span>
-        <div className="min-w-0 flex-1">
-          <div className="flex items-start justify-between gap-2">
-            <p className="truncate text-sm font-bold text-slate-900">{channel.name}</p>
-            <LivePing label={channel.ping} className="max-w-[12rem] shrink-0 normal-case tracking-normal" />
+      <div className="relative flex min-h-0 flex-1 flex-col gap-2">
+        <div className="flex items-center gap-3">
+          <span className="relative grid size-10 shrink-0 place-items-center rounded-2xl bg-white shadow-sm ring-1 ring-white">
+            <span className={cn("pointer-events-none absolute inset-0 rounded-2xl opacity-90", channel.halo)} />
+            <Icon className="relative size-6" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center justify-between gap-2">
+              <p className="truncate text-sm font-bold text-slate-900">{channel.name}</p>
+              <LivePing label={channel.ping} className="max-w-[9.5rem] shrink-0 normal-case tracking-normal" />
+            </div>
+            <div className="mt-1.5 flex h-5 flex-nowrap gap-1 overflow-hidden">
+              {channel.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="shrink-0 rounded-full bg-slate-900/[0.04] px-2 py-0.5 text-[9px] font-semibold text-slate-600 ring-1 ring-slate-200/80"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
-          <div className="mt-2 flex flex-wrap gap-1">
-            {channel.tags.map((tag) => (
-              <span
-                key={tag}
-                className="rounded-full bg-slate-900/[0.04] px-2 py-0.5 text-[9px] font-semibold text-slate-600 ring-1 ring-slate-200/80"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-          <div className="mt-2.5 h-4 overflow-hidden">
+        </div>
+        <div className="min-h-0 flex-1 overflow-hidden rounded-xl ring-1 ring-black/5">
+          <ChannelPreview id={channel.key} />
+        </div>
+        <div className="h-4 overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.p
                 key={ticker}
@@ -166,7 +229,6 @@ function ChannelCard({ channel }: { channel: Channel }) {
                 {ticker}
               </motion.p>
             </AnimatePresence>
-          </div>
         </div>
       </div>
     </motion.article>

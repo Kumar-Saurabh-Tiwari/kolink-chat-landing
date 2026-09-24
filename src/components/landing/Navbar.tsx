@@ -156,7 +156,7 @@ export function Navbar({ compact = false }: { compact?: boolean }) {
     >
       <nav
         className={cn(
-          "mx-auto flex max-w-6xl items-center justify-between rounded-full border border-white/90 bg-white/80 px-4 py-3 shadow-sm backdrop-blur-xl transition-shadow sm:px-6",
+          "mx-auto flex max-w-6xl items-center justify-between rounded-full border border-white/80 bg-white/65 px-4 py-3 shadow-sm backdrop-blur-xl transition-shadow sm:px-6",
           scrolled && "shadow-[0_8px_32px_rgba(15,23,42,0.08)]",
           compact && "px-3 py-2 sm:px-4",
         )}
